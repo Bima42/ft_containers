@@ -1,9 +1,10 @@
 #ifndef ITERATOR_TRAITS_HPP
 #define ITERATOR_TRAITS_HPP
 
-//include <random_access_iterator> cause this file doesnt know random_access_iterator
+#include "random_access_iterator.hpp"
 
 namespace ft {
+
 
     /*
      * Iterator traits class defining properties of iterators.
@@ -51,11 +52,11 @@ namespace ft {
 }
 
 /*
- * ptrdiff_t :          result of substracting one iterator from another
+ * ptrdiff_t :          result of subtracting one iterator from another
  * T :                  type of the element where iterator point
  * T* :                 type of pointer to an element where the iterator point
  * T& :                 type of reference where iterator point
  * iterator_category :  iterator category from Iterator
  */
 
-#endif //FT_CONTAINERS_ITERATOR_TRAITS_HPP
+#endif //ITERATOR_TRAITS_HPP

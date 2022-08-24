@@ -2,6 +2,7 @@
 #define ITERATOR_HPP
 
 namespace ft {
+
     template <class Category, typename T>
     class iterator {
     public:
@@ -11,6 +12,9 @@ namespace ft {
         typedef T*              pointer;
         typedef Category        iterator_category;
     };
+
+    class random_access_iterator_tag { };
+
 }
 
-#endif //FT_CONTAINERS_ITERATOR_HPP
+#endif //ITERATOR_HPP
