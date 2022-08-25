@@ -1,6 +1,8 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
 
+#include <iostream>
+
 namespace ft {
 
     template <class Category, typename T>
