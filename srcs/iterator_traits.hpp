@@ -31,7 +31,7 @@ namespace ft {
     public:
         typedef random_access_iterator_tag  iterator_category;
         typedef T                           value_type;
-        typedef std::ptrdiff_t                   difference_type;
+        typedef std::ptrdiff_t              difference_type;
         typedef T*                          pointer;
         typedef T&                          reference;
     };
@@ -45,7 +45,7 @@ namespace ft {
     public:
         typedef random_access_iterator_tag  iterator_category;
         typedef T                           value_type;
-        typedef std::ptrdiff_t                   difference_type;
+        typedef std::ptrdiff_t              difference_type;
         typedef const T*                    pointer;
         typedef const T&                    reference;
     };

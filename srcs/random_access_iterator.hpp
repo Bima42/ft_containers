@@ -29,7 +29,7 @@ namespace ft {
             random_access_iterator(const random_access_iterator &cpy) : _ptr(cpy._ptr) {}
 
             /*
-             * Copy assignation, give a iterator who is a copy from "rhs"
+             * Copy assignation, give an iterator who is a copy from "rhs"
              * Return the iterator
              */
             random_access_iterator &operator=(const random_access_iterator &rhs)
@@ -147,22 +147,6 @@ namespace ft {
                 return (*this);
             }
 
-            /* Operator- : subtract n
-             * Give iterator where element is "this - n" in memory
-             */
-            random_access_iterator operator-(difference_type n)
-            {
-                (this->_ptr - n);
-            }
-
-            /* Operator+ : add n
-             * Give iterator where element is "this + n" in memory
-             */
-            random_access_iterator operator+(difference_type n)
-            {
-                (this->_ptr + n);
-            }
-
             /* Transform iterator to const iterator */
             operator random_access_iterator<const T> () const
             {
@@ -238,7 +222,7 @@ namespace ft {
 
     /*
      * Operator>= : comparison between two iterators
-     * Return : true if lhs >= rhs
+     * Return : true if lhs <= rhs
      */
     /* (1) */
     template<typename T>
@@ -336,7 +320,6 @@ namespace ft {
     {
         return (&(*current) + n);
     }
-
 }
 
 #endif // RANDOM_ACCESS_ITERATOR_HPP
