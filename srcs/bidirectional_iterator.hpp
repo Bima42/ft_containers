@@ -11,15 +11,15 @@
 
 namespace ft {
 
-    template <typename T>
+    template<typename T>
     class bidirectional_iterator : ft::iterator<ft::bidirectional_iterator_tag, T> {
 
     public:
         typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::iterator_category iterator_category;
-        typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type        value_type;
-        typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::difference_type   difference_type;
-        typedef T*  pointer;
-        typedef T&  reference;
+        typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type value_type;
+        typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::difference_type difference_type;
+        typedef T *pointer;
+        typedef T &reference;
 
     private:
         pointer _ptr; // Element pointed by the iterator
@@ -38,8 +38,7 @@ namespace ft {
          * Copy assignation, give an iterator who is a copy from "rhs"
          * Return the iterator
          */
-        bidirectional_iterator &operator=(const bidirectional_iterator &rhs)
-        {
+        bidirectional_iterator &operator=(const bidirectional_iterator &rhs) {
             if (this == &rhs)
                 return (*this);
             this->_ptr = rhs._ptr;
@@ -54,22 +53,19 @@ namespace ft {
          */
 
         /* Base : Give pointer where iterator point, return iterator */
-        pointer base() const
-        {
+        pointer base() const {
             return (this->_ptr);
         }
 
         /* Operator* : dereference -> give reference to value of element where iterator point*/
-        reference operator*() const
-        {
+        reference operator*() const {
             return (*_ptr);
         }
 
         /* Operator-> : Returns a pointer to the element pointed to by the iterator
          * function calls operator* and returns its address
          */
-        pointer operator->() const
-        {
+        pointer operator->() const {
             return (&(this->operator*()));
         }
 
@@ -77,11 +73,11 @@ namespace ft {
          * Predecrement : decrements the base iterator kept by the object, iterator point to the previous element
          * Return : reference
          */
-        bidirectional_iterator &operator--()
-        {
+        bidirectional_iterator &operator--() {
             _ptr--;
             return (*this);
         }
+
         /* Postdecrement : decrement iterator to points to the previous element
          * Return : iterator decremented
          */
@@ -95,11 +91,11 @@ namespace ft {
          * * Preincrement : increments the base iterator kept by the object, iterator point to the next element
          * * Return : reference
          * */
-        bidirectional_iterator &operator++()
-        {
+        bidirectional_iterator &operator++() {
             _ptr++;
             return (*this);
         }
+
         /* Postincrement : increment iterator to points to the next element
          * * Return : iterator incremented
          * */
@@ -110,10 +106,10 @@ namespace ft {
         }
 
         /* Transform iterator to const iterator */
-        operator bidirectional_iterator<const T> () const
-        {
+        operator bidirectional_iterator<const T>() const {
             return (bidirectional_iterator<const T>(this->_ptr));
         }
     };
+}
 
 #endif // BIDIRECTIONAL_ITERATOR_HPP

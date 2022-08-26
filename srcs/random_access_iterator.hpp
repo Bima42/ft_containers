@@ -286,7 +286,7 @@ namespace ft {
 
     /*
      * Operator- : Difference between two iterators
-     * Return : difference_type
+     * Return : difference_type (number of elements)
      */
     /* (1) */
     template<typename T>
