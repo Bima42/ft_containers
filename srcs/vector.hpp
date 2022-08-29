@@ -309,7 +309,7 @@ namespace ft {
                 }
             }
 
-            /* insert()
+            /* TODO : insert()
              *
              */
 
@@ -340,15 +340,15 @@ namespace ft {
                     erase++;
                 }
                 for (iterator it = first; last != this->end(); last++) {
-                    *it = *(last + 1);
+                    *it = *last;
                     it++;
                 }
                 this->_size -= erase;
                 return (first);
             }
 
-            /* swap() */
-            /* shrink to fit */
+            /* TODO : swap() */
+            /* TODO : shrink to fit */
 
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
             void clear()
@@ -360,7 +360,7 @@ namespace ft {
             }
     };
 
-    /* OPERATORS */
+    /* TODO : OPERATORS */
 }
 
 #endif // VECTOR_HPP

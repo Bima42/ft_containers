@@ -2,7 +2,7 @@
 #include <vector>
 
 int main () {
-    int i = 0;
+    //int i = 0;
     ft::vector<int> test_ft(50, 100);
     std::vector<int> test_std(50, 100);
 
