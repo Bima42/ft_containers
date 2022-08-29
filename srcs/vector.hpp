@@ -234,14 +234,18 @@ namespace ft {
             {
                 if (n > this->max_size())
                     throw::std::length_error("The requested size is too high");
-                if (this->_capacity < n)
+                if (this->_capacity <= n)
                 {
                     pointer tmp = _alloc.allocate(n);
                     for (size_type i = 0; i < this->_size; i++) {
                         _alloc.construct(tmp + i, *(this->_vector + i));
                     }
-                    this->clear();
+
+                    for (size_type i = 0; i < this->_capacity; i++) {
+                        _alloc.destroy(_vector + i);
+                    }
                     _alloc.deallocate(this->_vector, this->_capacity);
+
                     this->_vector = tmp;
                     this->_capacity = n;
                 }
@@ -274,11 +278,52 @@ namespace ft {
                 return (this->_vector[n]);
             }
 
-            /* push_back() */
-            /* pop_back() */
-            /* insert() */
-            /* erase() */
+            /* push_back() : add element at the end after its current last element
+             *      - content of val is copied (or moved) to the new element.
+             *      - increases the container size by one : causes an automatic reallocation of the allocated storage
+             * space if -and only if- the new vector size surpasses the current vector capacity.
+             */
+            void push_back (const value_type& val)
+            {
+                // TODO : Ternaire ici non ??
+                if (this->_capacity == 0)
+                {
+                    this->_capacity = 1;
+                    this->reserve(this->capacity());
+                }
+                else if (this->_size + 1 > this->capacity())
+                {
+                    this->_capacity *= 2;
+                    this->reserve(this->capacity());
+                }
+                _alloc.construct((this->_vector + this->size()), val);
+                this->_size += 1;
+            }
+
+            /* pop_back() : Removes the last element in the vector, effectively reducing the container size by one
+             *      - This destroys the removed element.
+             */
+            void pop_back()
+            {
+                if (!(this->empty()))
+                {
+                    _alloc.destroy(&this->back());
+                    this->_size--;
+                }
+            }
+
+            /* insert()
+             *
+             */
+
+
+            /* erase()
+             *
+             */
+
+
             /* swap() */
+            /* shrink to fit */
 
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE
              * TODO : Care LEAKS !

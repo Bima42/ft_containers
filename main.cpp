@@ -6,7 +6,35 @@ int main () {
     ft::vector<int> test_ft(12, 100);
     std::vector<int> test_std(12, 100);
 
-    /*std::cout << std::endl << "--------------------resize()---------------------------" << std::endl;
+    /*std::cout << "--------------------push_back()---------------------------" << std::endl;
+    std::cout << "ft_container           ||||||||           std_container       " << std::endl;
+
+    ft::vector<int>::iterator ft_it = test_ft.begin();
+    std::vector<int>::iterator std_it = test_std.begin();
+    for (ft::vector<int>::iterator last = test_ft.end(); ft_it != last; ft_it++ ) {
+        std::cout << *ft_it << "               |||||||" << "               " << *std_it++ << "      " << std::endl;
+    }
+
+    std::cout << "------------------PUSH_BACK : 50----------------------" << std::endl;
+
+
+    std::cout << test_ft.size() << " ||||| " << test_ft.capacity() << std::endl;
+    std::cout << test_std.size() << " ||||| " << test_std.capacity() << std::endl;
+
+    test_ft.push_back(50);
+    test_std.push_back(50);
+
+    ft_it = test_ft.begin();
+    std_it = test_std.begin();
+
+    std::cout << test_ft.size() << " ||||| " << test_ft.capacity() << std::endl;
+    std::cout << test_std.size() << " ||||| " << test_std.capacity() << std::endl;
+
+    for (ft::vector<int>::iterator last = test_ft.end(); ft_it != last; ft_it++ ) {
+        std::cout << *ft_it << "               |||||||" << "               " << *std_it++ << "      " << std::endl;
+    }
+
+    std::cout << std::endl << "--------------------resize()---------------------------" << std::endl;
 
     std::cout << "Ft : Resize > _size : " << std::endl;
     test_ft.resize(12);
