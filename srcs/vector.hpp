@@ -292,10 +292,7 @@ namespace ft {
                     this->reserve(this->capacity());
                 }
                 else if (this->_size + 1 > this->capacity())
-                {
-                    this->_capacity *= 2;
-                    this->reserve(this->capacity());
-                }
+                    this->reserve(this->capacity() * 2);
                 _alloc.construct((this->_vector + this->size()), val);
                 this->_size += 1;
             }
@@ -317,17 +314,43 @@ namespace ft {
              */
 
 
-            /* erase()
-             *
+            /* erase() : Removes from the vector either a single element (position) or a range of elements [first,last]
+             *      - reduces the container size by the number of elements removed, which are destroyed.
+             *      - Because vectors use an array as their underlying storage, erasing elements in positions other
+             *      than the vector end causes the container to relocate all the elements after the segment erased to their new positions
+             *      - Return : An iterator pointing to the new location of the element that followed the last element erased by the
+             *      function call. (container end if the operation erased the last element in the sequence)
              */
+            iterator erase (iterator position)
+            {
+                _alloc.destroy(&(*position));
+                for (iterator it = position; it != this->end(); it++) {
+                    *it = *(it + 1);
+                }
+                this->_size -= 1;
+                return (position);
+            }
 
+            iterator erase (iterator first, iterator last)
+            {
+                size_type erase = 0;
+
+                for (iterator it = first; it != last; it++) {
+                    _alloc.destroy(&(*it));
+                    erase++;
+                }
+                for (iterator it = first; last != this->end(); last++) {
+                    *it = *(last + 1);
+                    it++;
+                }
+                this->_size -= erase;
+                return (first);
+            }
 
             /* swap() */
             /* shrink to fit */
 
-            /* Clear : destroy all elements using destroy, but NOT DEALLOCATE
-             * TODO : Care LEAKS !
-             */
+            /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
             void clear()
             {
                 for (size_type i = 0; i < this->_capacity; i++) {

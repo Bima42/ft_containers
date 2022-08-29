@@ -2,9 +2,9 @@
 #include <vector>
 
 int main () {
-    //int i = 0;
-    ft::vector<int> test_ft(12, 100);
-    std::vector<int> test_std(12, 100);
+    int i = 0;
+    ft::vector<int> test_ft(50, 100);
+    std::vector<int> test_std(50, 100);
 
     /*std::cout << "--------------------push_back()---------------------------" << std::endl;
     std::cout << "ft_container           ||||||||           std_container       " << std::endl;
