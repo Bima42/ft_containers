@@ -49,7 +49,7 @@ namespace ft {
     bool operator< (const ft::pair<T1, T2> &lhs, const ft::pair<T1, T2> &rhs)
     {
         return (lhs.first < rhs.first
-            || lhs.first > rhs.first && lhs.second < rhs.second);
+            || lhs.first < rhs.first && lhs.second < rhs.second);
     }
 
     template <class T1, class T2>
