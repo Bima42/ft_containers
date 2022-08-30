@@ -570,6 +570,56 @@ namespace ft {
     };
 
     /* TODO : OPERATORS */
+    template <class T, class Alloc>
+    bool operator== (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    {
+        if (lhs.size() != rhs.size())
+            return (false);
+        iterator beg_right = rhs.begin();
+        for (iterator it = lhs.begin(); it != lhs.end(); it++) {
+            if (*it != *beg_right)
+                return (false);
+            beg_right++;
+        }
+        return (true);
+    }
+
+    template <class T, class Alloc>
+    bool operator!= (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    {
+        return (!(lhs == rhs));
+    }
+
+    template <class T, class Alloc>
+    bool operator<  (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    {
+        iterator beg_right = rhs.begin();
+
+        for (iterator it = lhs.begin(); it != lhs.end(); it++) {
+            if (*it >= *beg_right)
+                return (false);
+            beg_right++;
+        }
+        return (true);
+    }
+
+    template <class T, class Alloc>
+    bool operator<= (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    {
+        return (!(rhs < lhs));
+    }
+
+    template <class T, class Alloc>
+    bool operator>  (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    {
+        return (rhs < lhs);
+    }
+
+    template <class T, class Alloc>
+    bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    {
+        return (!(lhs < rhs));
+    }
 }
 
 #endif // VECTOR_HPP
