@@ -96,11 +96,10 @@ namespace ft {
             /*
              * Copy Constructor
              * Will copy each element of the vector given in parameter
-             * TODO : use insert() function to copy the vector ? REMAKE COPY CONSTRUCTOR
              */
             vector (const vector &x) : _alloc(x._alloc), _size(0), _capacity(0), _vector(NULL)
             {
-                *this = x;
+                this->insert(this->begin(), x.begin(), x.end());
             }
 
             /* Destructor */
