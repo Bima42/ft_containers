@@ -120,13 +120,11 @@ namespace ft {
                 this->clear();
                 _vector = _alloc.allocate(_vector, x.capacity());
                 for (size_type i = 0; i < x.size(); i++) {
-                    _vector[i] = x._vector[i];
+                    _alloc.construct(_vector + i, x._vector[i]);
                 }
                 _size = x.size();
                 _capacity = x.capacity();
             }
-
-
 
 
             /*--------------------------ITERATOR--------------------------*/
