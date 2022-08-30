@@ -128,42 +128,7 @@ namespace ft {
             }
 
 
-            /* Assign() : Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
-             *      - range version : the new contents are elements constructed from each of the elements in the range between first and last, excluding last.
-             *      - fill version : the new contents are n elements, each initialized to a copy of val.
-             *      - Any elements held in the container before the call are destroyed and replaced by newly constructed elements
-             *      : automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
-             */
-            template <class InputIterator>
-            void assign (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
-                         InputIterator last)
-            {
-                size_type diff = ft::distance(first, last);
-                this->clear();
-                if (diff > this->_capacity)
-                {
-                    _alloc.deallocate(_vector, _capacity);
-                    _vector = _alloc.allocate(diff + 1);
-                }
-                for (size_type i = 0; first != last; i++) {
-                    _alloc.construct((_vector + i), *first++);
-                }
-                this->_size = diff;
-            }
 
-            void assign (size_type n, const value_type& val)
-            {
-                this->clear();
-                if (n > this->_capacity)
-                {
-                    _alloc.deallocate(_vector, _capacity);
-                    _vector = _alloc.allocate(n);
-                }
-                for (size_type i = 0; i != n; i++) {
-                    _alloc.construct((_vector + i), val);
-                }
-                this->_size = n;
-            }
 
             /*--------------------------ITERATOR--------------------------*/
             /* cbegin, cend, crbegin, crend : Are used in C++11 and plus. We don't implement it */
@@ -179,7 +144,11 @@ namespace ft {
             const_reverse_iterator rend() const { return (const_reverse_iterator(iterator(_vector + this->_size))); }
 
 
-            /*---------------------------CAPACITY-------------------------------*/
+            /*--------------------------------------------------------------------*
+             *                                                                    *
+             *                         CAPACITY                                   *
+             *                                                                    *
+             *--------------------------------------------------------------------*/
             size_type capacity () const { return (this->_capacity); }
             size_type size () const { return (this->_size); }
             size_type max_size() const { return (_alloc.max_size()); }
@@ -218,6 +187,8 @@ namespace ft {
                     _alloc.deallocate(this->_vector, this->_capacity);
                     this->_vector = tmp;
 
+                    /* Adapt capacity if n > capacity
+                     * Otherwise we keep capacity */
                     if (n > this->_capacity * 2)
                         this->_capacity = n;
                     else if (n > this->_capacity)
@@ -251,8 +222,30 @@ namespace ft {
                 }
             }
 
+            /* Shrink_to_fit : Requests the container to reduce its capacity to fit its size */
+            void shrink_to_fit()
+            {
+                if (this->size() < this->capacity())
+                {
+                    pointer tmp = _alloc.allocate(this->size());
+                    for (size_type i = 0; i < this->size(); i++)
+                        _alloc.construct(tmp + i, *(this->_vector + i));
 
-            /*-----------------------ELEMENT-ACCESS--------------------------*/
+                    for (size_type i = 0; i < this->capacity(); i++)
+                        _alloc.destroy(this->_vector + i);
+                    _alloc.deallocate(this->_vector, this->capacity());
+
+                    this->_vector = tmp;
+                    this->_capacity = this->size();
+                }
+            }
+
+
+            /*--------------------------------------------------------------------*
+             *                                                                    *
+             *                         ELEMENT ACCESS                             *
+             *                                                                    *
+             *--------------------------------------------------------------------*/
             reference front() { return (_vector[0]); }
             const_reference front() const { return (_vector[0]) ;}
             reference back() { return (_vector[_size - 1]); }
@@ -284,6 +277,51 @@ namespace ft {
             value_type *data() { return (this->_vector); }
 
             const value_type *data() const { return (this->_vector); }
+
+
+            /*--------------------------------------------------------------------*
+             *                                                                    *
+             *                         MODIFIERS                                  *
+             *                                                                    *
+             *--------------------------------------------------------------------*/
+
+            /* Assign() : Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
+             *      - range version : the new contents are elements constructed from each of the elements in the range between first and last, excluding last.
+             *      - fill version : the new contents are n elements, each initialized to a copy of val.
+             *      - Any elements held in the container before the call are destroyed and replaced by newly constructed elements
+             *      : automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
+             */
+            template <class InputIterator>
+            void assign (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+                         InputIterator last)
+            {
+                size_type diff = ft::distance(first, last);
+                this->clear();
+                if (diff > this->_capacity)
+                {
+                    _alloc.deallocate(_vector, _capacity);
+                    _vector = _alloc.allocate(diff + 1);
+                }
+                for (size_type i = 0; first != last; i++) {
+                    _alloc.construct((_vector + i), *first++);
+                }
+                this->_size = diff;
+            }
+
+            void assign (size_type n, const value_type& val)
+            {
+                this->clear();
+                if (n > this->_capacity)
+                {
+                    _alloc.deallocate(_vector, _capacity);
+                    _vector = _alloc.allocate(n);
+                }
+                for (size_type i = 0; i != n; i++) {
+                    _alloc.construct((_vector + i), val);
+                }
+                this->_size = n;
+            }
+
 
             /* push_back() : add element at the end after its current last element
              *      - content of val is copied (or moved) to the new element.
@@ -323,13 +361,144 @@ namespace ft {
              */
             iterator insert (iterator position, const value_type& val)
             {
+                if (this->size() + 1 > this->capacity())
+                {
+                    size_type diff = ft::distance(this->begin(), position);
+                    iterator it = this->begin();
 
+                    this->_size += 1;
+
+                    size_type j = 0;
+                    pointer tmp = _alloc.allocate(this->capacity() * 2);
+                    for (size_type i = 0; i != this->size(); i++) {
+                        if (it == position) {
+                            _alloc.construct(tmp + j++, val);
+                        }
+                        _alloc.construct(tmp + j++, *(this->_vector + i));
+                        it++;
+                    }
+                    for (size_type i = 0; i != this->capacity(); i++)
+                        _alloc.destroy(this->_vector + i);
+                    _alloc.deallocate(this->_vector, this->capacity());
+
+                    this->_vector = tmp;
+                    this->_capacity *= 2;
+
+                    return (iterator(_vector + diff));
+                }
+                else
+                {
+                    this->_size += 1;
+
+                    for (iterator it = this->end(); it != position; it--) {
+                        *it = *(it - 1);
+                    }
+                    *position = val;
+                }
+                return (position);
             }
 
-            //void insert (iterator position, size_type n, const value_type& val);
+            void insert (iterator position, size_type n, const value_type &val)
+            {
+                if (this->size() + n > this->capacity())
+                {
+                    if (this->size() + n > this->capacity() * 2)
+                        this->_capacity = this->size() + n;
+                    else if (this->size() + n > this->capacity())
+                        this->_capacity *= 2;
 
-            //template <class InputIterator>
-            //void insert (iterator position, InputIterator first, InputIterator last);
+                    iterator it = this->begin();
+
+                    this->_size += n;
+
+                    size_type j = 0;
+                    pointer tmp = _alloc.allocate(this->capacity());
+                    for (size_type i = 0; i != this->size(); i++) {
+                        if (it == position) {
+                            while (n--)
+                                _alloc.construct(tmp + j++, val);
+                        }
+                        _alloc.construct(tmp + j++, *(this->_vector + i));
+                        it++;
+                    }
+                    for (size_type i = 0; i != this->capacity(); i++)
+                        _alloc.destroy(this->_vector + i);
+                    _alloc.deallocate(this->_vector, this->capacity());
+
+                    this->_vector = tmp;
+                }
+                else
+                {
+                    iterator old_end = this->end();
+                    this->_size += n;
+
+                    /* Copy from the old_end to position, starting by the end of new vector */
+                    for (iterator new_end = this->end(); old_end != position - 1; new_end--)
+                    {
+                        *new_end = *old_end;
+                        old_end--;
+                    }
+
+                    /* Fill the range given, starting by the left side */
+                    for (size_type i = 0; i < n; i++) {
+                        *position++ = val;
+                    }
+                }
+            }
+
+
+            template <class InputIterator>
+            void insert (iterator position,
+                         typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+                         InputIterator last)
+            {
+                size_type n = ft::distance(first, last);
+
+                if (this->size() + n > this->capacity())
+                {
+                    if (this->size() + n > this->capacity() * 2)
+                        this->_capacity = this->size() + n;
+                    else if (this->size() + n > this->capacity())
+                        this->_capacity *= 2;
+
+                    iterator it = this->begin();
+
+                    this->_size += n;
+
+                    size_type j = 0;
+                    pointer tmp = _alloc.allocate(this->capacity());
+                    for (size_type i = 0; i != this->size(); i++) {
+                        if (it == position) {
+                            while (n--)
+                                _alloc.construct(tmp + j++, *first++);
+                        }
+                        _alloc.construct(tmp + j++, *(this->_vector + i));
+                        it++;
+                    }
+                    for (size_type i = 0; i != this->capacity(); i++)
+                        _alloc.destroy(this->_vector + i);
+                    _alloc.deallocate(this->_vector, this->capacity());
+
+                    this->_vector = tmp;
+                }
+                else
+                {
+                    iterator old_end = this->end();
+                    this->_size += n;
+
+                    /* Copy from the old_end to position, starting by the end of new vector */
+                    for (iterator new_end = this->end(); old_end != position - 1; new_end--)
+                    {
+                        *new_end = *old_end;
+                        old_end--;
+                    }
+
+                    /* Fill the range given, starting by the left side */
+                    for (size_type i = 0; i < n; i++) {
+                        *position++ = *first++;
+                    }
+                }
+            }
 
 
             /* erase() : Removes from the vector either a single element (position) or a range of elements [first,last]
@@ -392,25 +561,6 @@ namespace ft {
                 this->_size = _size_tmp;
                 this->_capacity = _capacity_tmp;
             }
-
-            /* Shrink_to_fit : Requests the container to reduce its capacity to fit its size */
-            void shrink_to_fit()
-            {
-                if (this->size() < this->capacity())
-                {
-                    pointer tmp = _alloc.allocate(this->size());
-                    for (size_type i = 0; i < this->size(); i++)
-                        _alloc.construct(tmp + i, *(this->_vector + i));
-
-                    for (size_type i = 0; i < this->capacity(); i++)
-                        _alloc.destroy(this->_vector + i);
-                    _alloc.deallocate(this->_vector, this->capacity());
-
-                    this->_vector = tmp;
-                    this->_capacity = this->size();
-                }
-            }
-
 
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
             void clear()

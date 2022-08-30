@@ -3,12 +3,37 @@
 
 int main () {
     //int i = 0;
-    //ft::vector<int> test_ft1(10, 100);
-    ft::vector<int> test_ft2(20, 50);
-    std::vector<int> test_std1(5, 100);
-    //std::vector<int> test_std2(20, 50);
+    ft::vector<int> test_ft1(10, 100);
+    ft::vector<int> test_ft2(3, 50);
+    std::vector<int> test_std1(10, 100);
+    std::vector<int> test_std2(3, 50);
 
-    /*std::cout << "---------------------------Shrink_to_fit()---------------------------" << std::endl;
+    /*std::cout << "---------------------------Insert()---------------------------" << std::endl;
+    std::cout << "------------------------STD_CONTAINER------------------------" << std::endl;
+    std::vector<int>::iterator ret;
+    std::vector<int>::iterator std_beg = test_std1.begin();
+    std::vector<int>::iterator test1 = test_std2.begin();
+    std::vector<int>::iterator test2 = test_std2.end();
+    std_beg++;
+
+    test_std1.insert(std_beg, test1, test2);
+
+    for (std::vector<int>::iterator b = test_std1.begin(); b != test_std1.end(); b++)
+        std::cout << *b << std::endl;
+
+    std::cout << "------------------------FT_CONTAINER------------------------" << std::endl;
+    ft::vector<int>::iterator ret2;
+    ft::vector<int>::iterator ft_beg = test_ft1.begin();
+    ft::vector<int>::iterator test3 = test_ft2.begin();
+    ft::vector<int>::iterator test4 = test_ft2.end();
+    ft_beg++;
+
+    test_ft1.insert(ft_beg, test3, test4);
+
+    for (ft::vector<int>::iterator b = test_ft1.begin(); b != test_ft1.end(); b++)
+        std::cout << *b << std::endl;
+
+    std::cout << "---------------------------Shrink_to_fit()---------------------------" << std::endl;
     std::cout << "------------------------FT_CONTAINER------------------------" << std::endl;
     test_ft1.pop_back();
     test_ft1.pop_back();
