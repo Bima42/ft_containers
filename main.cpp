@@ -3,10 +3,59 @@
 
 int main () {
     //int i = 0;
-    ft::vector<int> test_ft(50, 100);
-    std::vector<int> test_std(50, 100);
+    ft::vector<int> test_ft1(10, 100);
+    ft::vector<int> test_ft2(20, 50);
+    std::vector<int> test_std1(10, 100);
+    std::vector<int> test_std2(20, 50);
 
-    /*std::cout << "--------------------push_back()---------------------------" << std::endl;
+    /*std::cout << "---------------------------Swap()---------------------------" << std::endl;
+    std::cout << "------------------------FT_CONTAINER------------------------" << std::endl;
+    std::cout << "Size 1 : " << test_ft1.size() << std::endl;
+    std::cout << "Size 2 : " << test_ft2.size() << std::endl;
+
+    std::cout << "Capacity 1 : " << test_ft1.capacity() << std::endl;
+    std::cout << "Capacity 2 : " << test_ft2.capacity() << std::endl;
+
+    std::cout << "Begin 1 : " << *(test_ft1.begin()) << std::endl;
+    std::cout << "Begin 2 : " << *(test_ft2.begin()) << std::endl;
+
+    std::cout << "##### Swap ........ ######" << std::endl;
+    test_ft1.swap(test_ft2);
+
+    std::cout << "Size 1 : " << test_ft1.size() << std::endl;
+    std::cout << "Size 2 : " << test_ft2.size() << std::endl;
+
+    std::cout << "Capacity 1 : " << test_ft1.capacity() << std::endl;
+    std::cout << "Capacity 2 : " << test_ft2.capacity() << std::endl;
+
+    std::cout << "Begin 1 : " << *(test_ft1.begin()) << std::endl;
+    std::cout << "Begin 2 : " << *(test_ft2.begin()) << std::endl;
+
+
+    std::cout << "------------------------STD_CONTAINER------------------------" << std::endl;
+    std::cout << "Size 1 : " << test_std1.size() << std::endl;
+    std::cout << "Size 2 : " << test_std2.size() << std::endl;
+
+    std::cout << "Capacity 1 : " << test_std1.capacity() << std::endl;
+    std::cout << "Capacity 2 : " << test_std2.capacity() << std::endl;
+
+    std::cout << "Begin 1 : " << *(test_std1.begin()) << std::endl;
+    std::cout << "Begin 2 : " << *(test_std2.begin()) << std::endl;
+
+    std::cout << "##### Swap ........ ######" << std::endl;
+    test_std1.swap(test_std2);
+
+    std::cout << "Size 1 : " << test_std1.size() << std::endl;
+    std::cout << "Size 2 : " << test_std2.size() << std::endl;
+
+    std::cout << "Capacity 1 : " << test_std1.capacity() << std::endl;
+    std::cout << "Capacity 2 : " << test_std2.capacity() << std::endl;
+
+    std::cout << "Begin 1 : " << *(test_std1.begin()) << std::endl;
+    std::cout << "Begin 2 : " << *(test_std2.begin()) << std::endl;
+
+
+    std::cout << "--------------------push_back()---------------------------" << std::endl;
     std::cout << "ft_container           ||||||||           std_container       " << std::endl;
 
     ft::vector<int>::iterator ft_it = test_ft.begin();

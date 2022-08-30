@@ -96,7 +96,7 @@ namespace ft {
             /*
              * Copy Constructor
              * Will copy each element of the vector given in parameter
-             * TODO : use insert() function to copy the vector ?
+             * TODO : use insert() function to copy the vector ? REMAKE COPY CONSTRUCTOR
              */
             vector (const vector &x) : _alloc(x._alloc), _size(0), _capacity(0), _vector(NULL)
             {
@@ -347,7 +347,34 @@ namespace ft {
                 return (first);
             }
 
-            /* TODO : swap() */
+            /* Swap() : Exchanges the content of the container by the content of x, which is another vector object of the same type
+             *      - Sizes may differ.
+             *      - After call to this function, elements in this container are those which were in x before the call
+             *      and the elements of x are those which were in this.
+             *      - All iterators, references and pointers remain valid for the swapped objects
+             *      - Notice that a non-member function exists with the same name, swap, overloading that algorithm with an optimization that behaves like this member function.
+             */
+            void swap (vector &x)
+            {
+                if (this == &x)
+                    return ;
+
+                allocator_type  _alloc_tmp = x._alloc;
+                pointer         _vector_tmp = x._vector;
+                size_type       _size_tmp = x._size;
+                size_type       _capacity_tmp = x._capacity;
+
+                x._alloc = this->_alloc;
+                x._vector = this->_vector;
+                x._size = this->_size;
+                x._capacity = this->_capacity;
+
+                this->_alloc = _alloc_tmp;
+                this->_vector = _vector_tmp;
+                this->_size = _size_tmp;
+                this->_capacity = _capacity_tmp;
+            }
+
             /* TODO : shrink to fit */
 
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
