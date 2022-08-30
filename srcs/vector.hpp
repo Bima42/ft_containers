@@ -278,6 +278,13 @@ namespace ft {
                 return (this->_vector[n]);
             }
 
+            /* data() : Returns a direct pointer to the memory array used internally by the vector to store its owned elements.
+             *      - If vector object is const-qualified, the function returns a pointer to const value_type
+             */
+            value_type *data() { return (this->_vector); }
+
+            const value_type *data() const { return (this->_vector); }
+
             /* push_back() : add element at the end after its current last element
              *      - content of val is copied (or moved) to the new element.
              *      - increases the container size by one : causes an automatic reallocation of the allocated storage
@@ -309,9 +316,20 @@ namespace ft {
                 }
             }
 
-            /* TODO : insert()
-             *
+            /* insert() : vector is extended by inserting new elements before the element at the specified position
+             *      - increasing the container size by the number of elements inserted.
+             *      - causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
+             *      Because vectors use an array as their underlying storage : relocate all the elements that were after position to their new positions.
              */
+            iterator insert (iterator position, const value_type& val)
+            {
+
+            }
+
+            //void insert (iterator position, size_type n, const value_type& val);
+
+            //template <class InputIterator>
+            //void insert (iterator position, InputIterator first, InputIterator last);
 
 
             /* erase() : Removes from the vector either a single element (position) or a range of elements [first,last]
@@ -375,7 +393,24 @@ namespace ft {
                 this->_capacity = _capacity_tmp;
             }
 
-            /* TODO : shrink to fit */
+            /* Shrink_to_fit : Requests the container to reduce its capacity to fit its size */
+            void shrink_to_fit()
+            {
+                if (this->size() < this->capacity())
+                {
+                    pointer tmp = _alloc.allocate(this->size());
+                    for (size_type i = 0; i < this->size(); i++)
+                        _alloc.construct(tmp + i, *(this->_vector + i));
+
+                    for (size_type i = 0; i < this->capacity(); i++)
+                        _alloc.destroy(this->_vector + i);
+                    _alloc.deallocate(this->_vector, this->capacity());
+
+                    this->_vector = tmp;
+                    this->_capacity = this->size();
+                }
+            }
+
 
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
             void clear()

@@ -3,12 +3,33 @@
 
 int main () {
     //int i = 0;
-    ft::vector<int> test_ft1(10, 100);
+    //ft::vector<int> test_ft1(10, 100);
     ft::vector<int> test_ft2(20, 50);
-    std::vector<int> test_std1(10, 100);
-    std::vector<int> test_std2(20, 50);
+    std::vector<int> test_std1(5, 100);
+    //std::vector<int> test_std2(20, 50);
 
-    /*std::cout << "---------------------------Swap()---------------------------" << std::endl;
+    /*std::cout << "---------------------------Shrink_to_fit()---------------------------" << std::endl;
+    std::cout << "------------------------FT_CONTAINER------------------------" << std::endl;
+    test_ft1.pop_back();
+    test_ft1.pop_back();
+    std::cout << "Size : " << test_ft1.size() << std::endl;
+    std::cout << "Capacity : " << test_ft1.capacity() << std::endl;
+    std::cout << "##### Shrink to fit ........ ######" << std::endl;
+    test_ft1.shrink_to_fit();
+    std::cout << "Size : " << test_ft1.size() << std::endl;
+    std::cout << "Capacity : " << test_ft1.capacity() << std::endl;
+
+    std::cout << "------------------------STD_CONTAINER------------------------" << std::endl;
+    test_std1.pop_back();
+    test_std1.pop_back();
+    std::cout << "Size : " << test_std1.size() << std::endl;
+    std::cout << "Capacity : " << test_std1.capacity() << std::endl;
+    std::cout << "##### Shrink to fit ........ ######" << std::endl;
+    test_std1.shrink_to_fit();
+    std::cout << "Size : " << test_std1.size() << std::endl;
+    std::cout << "Capacity : " << test_std1.capacity() << std::endl;
+
+    std::cout << "---------------------------Swap()---------------------------" << std::endl;
     std::cout << "------------------------FT_CONTAINER------------------------" << std::endl;
     std::cout << "Size 1 : " << test_ft1.size() << std::endl;
     std::cout << "Size 2 : " << test_ft2.size() << std::endl;
