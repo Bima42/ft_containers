@@ -72,9 +72,7 @@ namespace ft {
             }
 
             /*
-             * TODO : NEED PROTECTION HERE ??? We dont put for the moment
              * Constructor using Range : build container using elements in range [first, last)
-             *
              * ft::distance(first, last) : number of elements between first and last
              */
             template <class InputIterator>
@@ -569,7 +567,6 @@ namespace ft {
             }
     };
 
-    /* TODO : OPERATORS */
     template <class T, class Alloc>
     bool operator== (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
     {
@@ -619,6 +616,13 @@ namespace ft {
     bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
         return (!(lhs < rhs));
+    }
+
+    /* Swap() : overloading swap algorithm with an optimization that behaves like this member function. */
+    template <class T, class Alloc>
+    void swap (vector<T,Alloc>& x, vector<T,Alloc>&y)
+    {
+        x.swap(y);
     }
 }
 
