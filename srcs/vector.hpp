@@ -572,8 +572,8 @@ namespace ft {
     {
         if (lhs.size() != rhs.size())
             return (false);
-        iterator beg_right = rhs.begin();
-        for (iterator it = lhs.begin(); it != lhs.end(); it++) {
+        typename ft::vector<T>::const_iterator beg_right = rhs.begin();
+        for (typename ft::vector<T>::const_iterator it = lhs.begin(); it != lhs.end(); it++) {
             if (*it != *beg_right)
                 return (false);
             beg_right++;
@@ -590,9 +590,9 @@ namespace ft {
     template <class T, class Alloc>
     bool operator<  (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
     {
-        iterator beg_right = rhs.begin();
+        typename ft::vector<T>::const_iterator beg_right = rhs.begin();
 
-        for (iterator it = lhs.begin(); it != lhs.end(); it++) {
+        for (typename ft::vector<T>::const_iterator it = lhs.begin(); it != lhs.end(); it++) {
             if (*it >= *beg_right)
                 return (false);
             beg_right++;
