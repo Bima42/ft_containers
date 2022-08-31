@@ -94,10 +94,12 @@ namespace ft {
             /*
              * Copy Constructor
              * Will copy each element of the vector given in parameter
+             * TODO : use insert()
              */
             vector (const vector &x) : _alloc(x._alloc), _vec(NULL), _size(0), _capacity(0)
             {
-                this->insert(this->begin(), x.begin(), x.end());
+                //this->insert(this->begin(), x.begin(), x.end());
+                *this = x;
             }
 
             /* Destructor */
@@ -118,13 +120,11 @@ namespace ft {
                 this->clear();
                 if (this->capacity() < x.capacity())
                     this->reserve(x.capacity());
-                this->insert(this->end(), x.begin(), x.end());
-                /*_vec = _alloc.allocate(x.capacity());
                 for (size_type i = 0; i < x.size(); i++) {
                     _alloc.construct(_vec + i, x._vec[i]);
                 }
                 _size = x.size();
-                _capacity = x.capacity();*/
+                _capacity = x.capacity();
                 return (*this);
             }
 
@@ -137,10 +137,10 @@ namespace ft {
             const_iterator end() const { return (const_iterator(_vec + this->_size)); }
 
             /*-----------------------REVERSE-ITERATOR-----------------------*/
-            reverse_iterator rbegin() { return (reverse_iterator(iterator(_vec))); }
-            const_reverse_iterator rbegin() const { return (const_reverse_iterator(iterator(_vec))); }
-            reverse_iterator rend() { return (reverse_iterator(iterator(_vec + this->_size))); }
-            const_reverse_iterator rend() const { return (const_reverse_iterator(iterator(_vec + this->_size))); }
+            reverse_iterator rbegin() { return (reverse_iterator(iterator(this->end()))); }
+            const_reverse_iterator rbegin() const { return (const_reverse_iterator(iterator(this->end()))); }
+            reverse_iterator rend() { return (reverse_iterator(iterator(this->begin()))); }
+            const_reverse_iterator rend() const { return (const_reverse_iterator(iterator(this->begin()))); }
 
 
             /*--------------------------------------------------------------------*
@@ -489,7 +489,7 @@ namespace ft {
 
                     this->_vec = tmp;
                 }
-                else if
+                else
                 {
                     iterator old_end = this->end();
                     this->_size += n;
@@ -581,61 +581,59 @@ namespace ft {
     };
 
     template <class T, class Alloc>
-    bool operator== (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    bool operator== (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
     {
         if (lhs.size() != rhs.size())
             return (false);
-        typename ft::vector<T>::const_iterator beg_right = rhs.begin();
-        for (typename ft::vector<T>::const_iterator it = lhs.begin(); it != lhs.end(); it++) {
-            if (*it != *beg_right)
+        for (size_t i = 0; i < lhs.size(); i++) {
+            if (lhs[i] != rhs[i])
                 return (false);
-            beg_right++;
         }
         return (true);
     }
 
     template <class T, class Alloc>
-    bool operator!= (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    bool operator!= (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
     {
         return (!(lhs == rhs));
     }
 
     template <class T, class Alloc>
-    bool operator<  (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    bool operator<  (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
     {
         typename ft::vector<T>::const_iterator right = rhs.begin();
 
         for (typename ft::vector<T>::const_iterator left = lhs.begin(); left != lhs.end(); left++) {
-            if (*right < *left || *right == rhs.end())
+            if (*right < *left || right == rhs.end())
                 return (false);
             else if (*left < *right)
                 return (true);
             right++;
         }
-        return (*right != rhs.end());
+        return (right != rhs.end());
     }
 
     template <class T, class Alloc>
-    bool operator<= (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    bool operator<= (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
     {
         return (!(rhs < lhs));
     }
 
     template <class T, class Alloc>
-    bool operator>  (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+    bool operator>  (const ft::vector<T,Alloc> &lhs, const ft::vector<T,Alloc> &rhs)
     {
         return (rhs < lhs);
     }
 
     template <class T, class Alloc>
-    bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
     {
         return (!(lhs < rhs));
     }
 
     /* Swap() : overloading swap algorithm with an optimization that behaves like this member function. */
     template <class T, class Alloc>
-    void swap (vector<T,Alloc>& x, vector<T,Alloc>&y)
+    void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>&y)
     {
         x.swap(y);
     }
