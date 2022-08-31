@@ -132,7 +132,7 @@ namespace ft {
             /* Operator-= : take the element pointed by iterator "- n"
              * Return : reference to iterator
              */
-            random_access_iterator &operator-=(difference_type n) const
+            random_access_iterator &operator-=(difference_type n)
             {
                 this->_ptr -= n;
                 return (*this);
@@ -141,7 +141,7 @@ namespace ft {
             /* Operator+= : take the element pointed by iterator "+ n"
              * Return : reference to iterator
              */
-            random_access_iterator &operator+=(difference_type n) const
+            random_access_iterator &operator+=(difference_type n)
             {
                 this->_ptr += n;
                 return (*this);

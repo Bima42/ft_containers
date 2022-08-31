@@ -3,7 +3,7 @@ NAME = containers
 SRCS =	main.cpp
 
 CC = g++-11
-FLAGS = -Wall -Wextra -Werror -pedantic
+FLAGS = -Wall -Wextra -Werror -pedantic -g
 CPP_FLAGS = -std=c++98
 
 OBJS = $(SRCS:.cpp=.o)
