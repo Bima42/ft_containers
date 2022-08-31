@@ -358,38 +358,38 @@ namespace ft {
              *      - causes an automatic reallocation of the allocated storage space if -and only if- the new vector size surpasses the current vector capacity.
              *      Because vectors use an array as their underlying storage : relocate all the elements that were after position to their new positions.
              */
-            iterator insert (iterator position, const value_type& val)
+            iterator insert(iterator position, const value_type &val)
             {
                 if (this->size() + 1 > this->capacity())
                 {
-                    size_type diff = ft::distance(this->begin(), position);
-                    iterator it = this->begin();
-
-                    this->_size += 1;
-
-                    size_type j = 0;
-                    pointer tmp = _alloc.allocate(this->capacity() * 2);
-                    for (size_type i = 0; i < this->size(); i++) {
-                        if (it == position) {
-                            _alloc.construct(tmp + j++, val);
-                        }
-                        else
-                            _alloc.construct(tmp + j++, *(this->_vec + i));
-                        it++;
+                    if (this->size() == 0)
+                    {
+                        this->_size = 1;
+                        this->_capacity = 1;
+                        this->_vec = _alloc.allocate(1);
+                        _alloc.construct(this->_vec, val);
                     }
-                    for (size_type i = 0; i != this->capacity(); i++)
-                        _alloc.destroy(this->_vec + i);
-                    _alloc.deallocate(this->_vec, this->capacity());
-
-                    this->_vec = tmp;
-                    this->_capacity *= 2;
-
-                    return (iterator(_vec + diff));
-                }
-                else
-                {
-                    this->_size += 1;
-
+                    else {
+                        size_type i = 0;
+                        iterator it_tmp = this->begin();
+                        size_type ret = position - this->begin();
+                        pointer tmp = _alloc.allocate(this->capacity() * 2);
+                        _size += 1;
+                        for (size_type j = 0; j < this->size(); j++) {
+                            if (it_tmp == position)
+                                _alloc.construct(tmp + i++, val);
+                            _alloc.construct(tmp + i++, *(_vec + j));
+                            it_tmp++;
+                        }
+                        for (size_type j = 0; j < this->size(); j++)
+                            _alloc.destroy(_vec + j);
+                        _alloc.deallocate(_vec, _capacity);
+                        _capacity *= 2;
+                        _vec = tmp;
+                        return iterator(_vec + ret);
+                    }
+                } else {
+                    _size += 1;
                     for (iterator it = this->end(); it != position; it--) {
                         *it = *(it - 1);
                     }
@@ -398,58 +398,44 @@ namespace ft {
                 return (position);
             }
 
-            void insert (iterator position, size_type n, const value_type &val)
+                void insert(iterator position, size_type n, const value_type &val)
             {
-                if (this->size() + n > this->capacity())
+                if (_size + n > _capacity)
                 {
+                    size_type distance = ft::distance(this->begin(), position);
+
                     if (this->size() + n > this->capacity() * 2)
-                        this->_capacity = this->size() + n;
+                        this->_capacity = n + this->size();
                     else if (this->size() + n > this->capacity())
                         this->_capacity *= 2;
-
-                    iterator it = this->begin();
-
-                    this->_size += n;
-
-                    size_type j = 0;
                     pointer tmp = _alloc.allocate(this->capacity());
-                    for (size_type i = 0; i < this->size(); i++) {
-                        if (it == position) {
-                            while (n--)
-                            {
-                                _alloc.construct(tmp + j++, val);
-                                i++;
-                            }
-                        }
-                        else
-                            _alloc.construct(tmp + j++, *(this->_vec + i));
-                        it++;
-                    }
-                    for (size_type i = 0; i != this->capacity(); i++)
-                        _alloc.destroy(this->_vec + i);
-                    _alloc.deallocate(this->_vec, this->capacity());
-
-                    this->_vec = tmp;
+                    for (size_type i = 0; i < distance; i++)
+                        _alloc.construct(tmp + i, *(_vec + i));
+                    for (size_type i = 0; i < n; i++)
+                        _alloc.construct(tmp + i + distance, val);
+                    for (size_type i = 0; i < this->size(); i++)
+                        _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
+                    _size = this->size() + n;
+                    for (size_type j = 0; j < this->size(); j++)
+                        _alloc.destroy(_vec + j);
+                    _alloc.deallocate(_vec, _capacity);
+                    _vec = tmp;
                 }
                 else
                 {
-                    iterator old_end = this->end();
-                    this->_size += n;
-
-                    /* Copy from the old_end to position, starting by the end of new vector */
-                    for (iterator new_end = this->end(); old_end != position - 1; new_end--)
+                    size_type new_end = _size + n;
+                    for (iterator end_scope = this->end(); end_scope != position; end_scope--)
                     {
-                        *new_end = *old_end;
-                        old_end--;
+                        _alloc.construct(_vec + new_end--, *end_scope);
                     }
-
-                    /* Fill the range given, starting by the left side */
-                    for (size_type i = 0; i < n; i++) {
-                        *position++ = val;
+                    _alloc.construct(_vec + new_end, *position);
+                    for (size_type i = 0;i < n; i++)
+                    {
+                        *(position + i) = val;
                     }
+                    _size += n;
                 }
             }
-
 
             template <class InputIterator>
             void insert (iterator position,
@@ -457,55 +443,42 @@ namespace ft {
                          InputIterator last)
             {
                 size_type n = ft::distance(first, last);
-
-                if (this->size() + n > this->capacity())
+                size_type distance = ft::distance(this->begin(), position);
+                if (_size + n > _capacity)
                 {
+                    //TODO: Protect if 0 !!!!!!
                     if (this->size() + n > this->capacity() * 2)
-                        this->_capacity = this->size() + n;
+                        this->_capacity = n + this->size();
                     else if (this->size() + n > this->capacity())
                         this->_capacity *= 2;
-
-                    iterator it = this->begin();
-
-                    this->_size += n;
-
-                    size_type j = 0;
                     pointer tmp = _alloc.allocate(this->capacity());
-                    for (size_type i = 0; i < this->size(); i++) {
-                        if (it == position) {
-                            while (n--)
-                            {
-                                _alloc.construct(tmp + j++, *first++);
-                                i++;
-                            }
-                        }
-                        else
-                            _alloc.construct(tmp + j++, *(this->_vec + i));
-                        it++;
-                    }
-                    for (size_type i = 0; i != this->capacity(); i++)
-                        _alloc.destroy(this->_vec + i);
-                    _alloc.deallocate(this->_vec, this->capacity());
-
-                    this->_vec = tmp;
+                    for (size_type i = 0; i < distance; i++)
+                        _alloc.construct(tmp + i, *(_vec + i));
+                    for (size_type i = 0; i < n; i++)
+                        _alloc.construct(tmp + i + distance, *first++);
+                    for (size_type i = 0; i < this->size(); i++)
+                        _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
+                    _size = this->size() + n;
+                    for (size_type j = 0; j < this->size(); j++)
+                        _alloc.destroy(_vec + j);
+                    _alloc.deallocate(_vec, _capacity);
+                    _vec = tmp;
                 }
                 else
                 {
-                    iterator old_end = this->end();
-                    this->_size += n;
-
-                    /* Copy from the old_end to position, starting by the end of new vector */
-                    for (iterator new_end = this->end(); old_end != position - 1; new_end--)
+                    size_type new_end = _size + n;
+                    for (iterator end_scope = this->end(); end_scope != position; end_scope--)
                     {
-                        *new_end = *old_end;
-                        old_end--;
+                        _alloc.construct(_vec + new_end--, *end_scope);
                     }
-
-                    /* Fill the range given, starting by the left side */
-                    for (size_type i = 0; i < n; i++) {
-                        *position++ = *first++;
+                    _alloc.construct(_vec + new_end, *position);
+                    for (size_type i = 0;i < n; i++)
+                    {
+                        *(position + i) = *first++;
                     }
+                    _size += n;
                 }
+
             }
 
 
