@@ -603,14 +603,16 @@ namespace ft {
     template <class T, class Alloc>
     bool operator<  (const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
     {
-        typename ft::vector<T>::const_iterator beg_right = rhs.begin();
+        typename ft::vector<T>::const_iterator right = rhs.begin();
 
-        for (typename ft::vector<T>::const_iterator it = lhs.begin(); it != lhs.end(); it++) {
-            if (*it >= *beg_right)
+        for (typename ft::vector<T>::const_iterator left = lhs.begin(); left != lhs.end(); left++) {
+            if (*right < *left || *right == rhs.end())
                 return (false);
-            beg_right++;
+            else if (*left < *right)
+                return (true);
+            right++;
         }
-        return (true);
+        return (*right != rhs.end());
     }
 
     template <class T, class Alloc>
