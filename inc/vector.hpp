@@ -5,6 +5,7 @@
 #include "reverse_iterator.hpp"
 #include "is_integral.hpp"
 #include "enable_if.hpp"
+#include "equal.hpp"
 #include "utils.hpp"
 
 namespace ft {

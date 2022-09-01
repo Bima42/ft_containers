@@ -16,6 +16,7 @@ namespace ft {
     };
 
     class random_access_iterator_tag { };
+
     class bidirectional_iterator_tag { };
 
 }

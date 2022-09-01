@@ -130,7 +130,7 @@ namespace ft {
                */
               reverse_iterator &operator-= (difference_type n)
               {
-                  this->_ptr += n;
+                  this->_it += n;
                   return (*this);
               }
 
@@ -139,7 +139,7 @@ namespace ft {
               * Return : decremented iterator
               */
               reverse_iterator &operator+= (difference_type n){
-                  this->_ptr -= n;
+                  this->_it -= n;
                   return (*this);
               }
     };
