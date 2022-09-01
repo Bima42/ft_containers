@@ -299,7 +299,8 @@ namespace ft {
                 if (diff > this->_capacity)
                 {
                     _alloc.deallocate(_vec, _capacity);
-                    _vec = _alloc.allocate(diff + 1);
+                    _vec = _alloc.allocate(diff);
+                    this->_capacity = diff;
                 }
                 for (size_type i = 0; first != last; i++) {
                     _alloc.construct((_vec + i), *first++);
@@ -314,6 +315,7 @@ namespace ft {
                 {
                     _alloc.deallocate(_vec, _capacity);
                     _vec = _alloc.allocate(n);
+                    this->_capacity = n;
                 }
                 for (size_type i = 0; i != n; i++) {
                     _alloc.construct((_vec + i), val);
