@@ -577,7 +577,7 @@ namespace ft {
         typename ft::vector<T>::const_iterator right = rhs.begin();
 
         for (typename ft::vector<T>::const_iterator left = lhs.begin(); left != lhs.end(); left++) {
-            if (*right < *left || right == rhs.end())
+            if (right == rhs.end() || *right < *left)
                 return (false);
             else if (*left < *right)
                 return (true);
