@@ -406,11 +406,11 @@ namespace ft {
                 {
                     if (this->size() == 0)
                     {
-                        this->_size = n;
-                        this->_capacity = n;
                         this->_vec = _alloc.allocate(n);
                         for (size_type i = 0; i < n; i++)
                             _alloc.construct(this->_vec + i, val);
+                        this->_size = n;
+                        this->_capacity = n;
                     }
                     else {
                         size_type distance = ft::distance(this->begin(), position);
@@ -462,11 +462,11 @@ namespace ft {
                 {
                     if (this->size() == 0)
                     {
-                        this->_size = n;
-                        this->_capacity = n;
                         this->_vec = _alloc.allocate(n);
                         for (size_type i = 0; i < n; i++)
                             _alloc.construct(this->_vec + i, *first++);
+                        this->_size = n;
+                        this->_capacity = n;
                     }
                     else {
                         if (this->size() + n > this->capacity() * 2)
@@ -548,7 +548,7 @@ namespace ft {
              */
             void swap (vector &x)
             {
-                if (this == &x)
+                if (x == *this)
                     return ;
 
                 allocator_type  _alloc_tmp = x._alloc;
