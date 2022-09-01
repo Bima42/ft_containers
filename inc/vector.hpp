@@ -303,7 +303,7 @@ namespace ft {
                     _vec = _alloc.allocate(diff);
                     this->_capacity = diff;
                 }
-                for (size_type i = 0; first != last; i++) {
+                for (size_type i = 0; i < diff; i++) {
                     _alloc.construct((_vec + i), *first++);
                 }
                 this->_size = diff;
@@ -318,7 +318,7 @@ namespace ft {
                     _vec = _alloc.allocate(n);
                     this->_capacity = n;
                 }
-                for (size_type i = 0; i != n; i++) {
+                for (size_type i = 0; i < n; i++) {
                     _alloc.construct((_vec + i), val);
                 }
                 this->_size = n;
