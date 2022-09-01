@@ -398,28 +398,40 @@ namespace ft {
                 return (position);
             }
 
-                void insert(iterator position, size_type n, const value_type &val)
+            void insert(iterator position, size_type n, const value_type &val)
             {
+                size_type old_cap = this->capacity();
+
                 if (_size + n > _capacity)
                 {
-                    size_type distance = ft::distance(this->begin(), position);
+                    if (this->size() == 0)
+                    {
+                        this->_size = n;
+                        this->_capacity = n;
+                        this->_vec = _alloc.allocate(n);
+                        for (size_type i = 0; i < n; i++)
+                            _alloc.construct(this->_vec + i, val);
+                    }
+                    else {
+                        size_type distance = ft::distance(this->begin(), position);
+                        if (this->size() + n > this->capacity() * 2)
+                            this->_capacity = n + this->size();
+                        else if (this->size() + n > this->capacity())
+                            this->_capacity *= 2;
+                        pointer tmp = _alloc.allocate(this->capacity());
+                        for (size_type i = 0; i < distance; i++)
+                            _alloc.construct(tmp + i, *(_vec + i));
+                        for (size_type i = 0; i < n; i++)
+                            _alloc.construct(tmp + i + distance, val);
+                        for (size_type i = 0; i + distance < this->size(); i++)
+                            _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
+                        for (size_type j = 0; j < this->size(); j++)
+                            _alloc.destroy(_vec + j);
+                        _alloc.deallocate(_vec, old_cap);
 
-                    if (this->size() + n > this->capacity() * 2)
-                        this->_capacity = n + this->size();
-                    else if (this->size() + n > this->capacity())
-                        this->_capacity *= 2;
-                    pointer tmp = _alloc.allocate(this->capacity());
-                    for (size_type i = 0; i < distance; i++)
-                        _alloc.construct(tmp + i, *(_vec + i));
-                    for (size_type i = 0; i < n; i++)
-                        _alloc.construct(tmp + i + distance, val);
-                    for (size_type i = 0; i < this->size(); i++)
-                        _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
-                    _size = this->size() + n;
-                    for (size_type j = 0; j < this->size(); j++)
-                        _alloc.destroy(_vec + j);
-                    _alloc.deallocate(_vec, _capacity);
-                    _vec = tmp;
+                        _size = this->size() + n;
+                        _vec = tmp;
+                    }
                 }
                 else
                 {
@@ -444,25 +456,37 @@ namespace ft {
             {
                 size_type n = ft::distance(first, last);
                 size_type distance = ft::distance(this->begin(), position);
+                size_type old_cap = this->capacity();
+
                 if (_size + n > _capacity)
                 {
-                    //TODO: Protect if 0 !!!!!!
-                    if (this->size() + n > this->capacity() * 2)
-                        this->_capacity = n + this->size();
-                    else if (this->size() + n > this->capacity())
-                        this->_capacity *= 2;
-                    pointer tmp = _alloc.allocate(this->capacity());
-                    for (size_type i = 0; i < distance; i++)
-                        _alloc.construct(tmp + i, *(_vec + i));
-                    for (size_type i = 0; i < n; i++)
-                        _alloc.construct(tmp + i + distance, *first++);
-                    for (size_type i = 0; i < this->size(); i++)
-                        _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
-                    _size = this->size() + n;
-                    for (size_type j = 0; j < this->size(); j++)
-                        _alloc.destroy(_vec + j);
-                    _alloc.deallocate(_vec, _capacity);
-                    _vec = tmp;
+                    if (this->size() == 0)
+                    {
+                        this->_size = n;
+                        this->_capacity = n;
+                        this->_vec = _alloc.allocate(n);
+                        for (size_type i = 0; i < n; i++)
+                            _alloc.construct(this->_vec + i, *first++);
+                    }
+                    else {
+                        if (this->size() + n > this->capacity() * 2)
+                            this->_capacity = n + this->size();
+                        else
+                            this->_capacity *= 2;
+                        pointer tmp = _alloc.allocate(this->capacity());
+                        for (size_type i = 0; i < distance; i++)
+                            _alloc.construct(tmp + i, *(_vec + i));
+                        for (size_type i = 0; i < n; i++)
+                            _alloc.construct(tmp + i + distance, *first++);
+                        for (size_type i = 0; i + distance < this->size(); i++)
+                            _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
+                        for (size_type j = 0; j < this->size(); j++)
+                            _alloc.destroy(_vec + j);
+                        _alloc.deallocate(_vec, old_cap);
+
+                        _size = this->size() + n;
+                        _vec = tmp;
+                    }
                 }
                 else
                 {
@@ -546,7 +570,7 @@ namespace ft {
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
             void clear()
             {
-                for (size_type i = 0; i < this->_capacity; i++) {
+                for (size_type i = 0; i != this->size(); i++) {
                     _alloc.destroy(_vec + i);
                 }
                 this->_size = 0;
