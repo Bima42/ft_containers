@@ -50,7 +50,7 @@ namespace ft {
             /* Operator* : decrease copy of iterator
              * Return : reference to this temp iterator
              */
-            reference operator* () const
+            reference operator*() const
             {
                 iterator_type temp = _it;
                 return (*(--temp));
@@ -59,7 +59,7 @@ namespace ft {
             /* Operator-> : function calls operator* and returns its address
              * Return : pointer to the element pointed to by the iterator
              */
-            pointer operator-> () const
+            pointer operator->() const
             {
                 return &(operator*());
             }
