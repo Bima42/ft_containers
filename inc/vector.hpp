@@ -333,10 +333,7 @@ namespace ft {
             {
                 // TODO : Ternaire ici non ??
                 if (this->_capacity == 0)
-                {
-                    this->_capacity = 1;
-                    this->reserve(this->capacity());
-                }
+                    this->reserve(1);
                 else if (this->_size + 1 > this->capacity())
                     this->reserve(this->capacity() * 2);
                 _alloc.construct((this->_vec + this->size()), val);
