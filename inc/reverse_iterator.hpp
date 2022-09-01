@@ -31,15 +31,6 @@ namespace ft {
             template <class Iter>
             reverse_iterator (const reverse_iterator<Iter> &rev_it) : _it(rev_it.base()) {}
 
-            template <class Iter>
-            reverse_iterator &operator=(const reverse_iterator<Iter> &rev_it)
-            {
-                if (this == &rev_it)
-                    return (*this);
-                this->_it = rev_it.base();
-                return (*this);
-            }
-
             virtual ~reverse_iterator() {}
 
             iterator_type base() const
@@ -284,7 +275,7 @@ namespace ft {
             const ft::reverse_iterator<Iterator> &lhs,
             const ft::reverse_iterator<Iterator> &rhs)
     {
-        return (lhs.base() - rhs.base());
+        return (rhs.base() - lhs.base());
     }
     /* (2) */
     template<typename Iter1, typename Iter2>
@@ -292,7 +283,7 @@ namespace ft {
             const ft::reverse_iterator<Iter1> &lhs,
             const ft::reverse_iterator<Iter2> &rhs)
     {
-        return (lhs.base() - rhs.base());
+        return (rhs.base() - lhs.base());
     }
 
     /*
