@@ -5,7 +5,7 @@
 #include <memory>
 
 
-template <typename Ite_1, typename Ite_2>
+/*template <typename Ite_1, typename Ite_2>
 void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
 {
     std::cout << (first < second) << std::endl;
@@ -14,7 +14,7 @@ void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
     std::cout << (first >= second) << std::endl;
     if (redo)
         ft_eq_ope(second, first, 0);
-}
+}*/
 
 
 int main () {
@@ -55,6 +55,16 @@ int main () {
     test.printTree();
     ft::BinarySearchTree< ft::pair<int, int>, int > copy(test);
     copy.printTree();
+
+    ft::BinarySearchTree< ft::pair<int, int>, int >::iterator it;
+    it = test.begin();
+
+    std::cout << "it = " << (*it).first << std::endl;
+    ++it;
+    std::cout << "++it = " << (*it).first << std::endl;
+    ++it;
+    std::cout << "++it = " << (*it).first << std::endl;
+
 
     //int i = 0;
 

@@ -60,6 +60,7 @@ namespace ft {
                         return (*this);
                     this->_nodePtr = rhs._nodePtr;
                     this->_treePtr = rhs._treePtr;
+                    return (*this);
                 }
 
                 operator BstIterator<const P>() const
@@ -269,7 +270,6 @@ namespace ft {
                 t = NULL;
             }
 
-
             void printBT(const std::string& prefix, const Node* node, bool isLeft)
             {
                 if ( node != NULL )
@@ -322,6 +322,8 @@ namespace ft {
              */
             bool isEmpty( ) const { return (_root == NULL); }
 
+            void makeEmpty () { makeEmpty(this->_root); }
+
             /** insert() : Internal method to insert into a subtree.
             *
             * @param x : is the item to insert.
@@ -333,8 +335,7 @@ namespace ft {
                 node* tmp = insert(_root, NULL, x);
                 if (isEmpty())
                     this->_root = tmp;
-                //reSetParent(_root);
-                return iterator(tmp, this);
+                return iterator(tmp, this); // iterator required two args
             }
 
             /** insert() : Public who calls the private methods
@@ -410,28 +411,34 @@ namespace ft {
                 }
             *****************************************************/
 
+            iterator find(const value_type &to_find)
+            {
+                node *tmp = this->_root;
 
-            /** reSetParent() : Reorganize all parent pointer inside the tree, recursively
-             *
-             * @param current : start with _root
-             */
-            void reSetParent(node *current) {
-                if (current)
-                {
-                    if (current->left != NULL) {
-                        current->left->parent = current;
-                        reSetParent(current->left);
-                    }
-                    if (current->right != NULL) {
-                        current->right->parent = current;
-                        reSetParent(current->right);
-                    }
-                }
+                if (tmp == NULL)
+                    return (NULL);
+                while (tmp != NULL && tmp->value.first != to_find.first)
+                    tmp = (Compare()(to_find.first, tmp->value.first) ? tmp->left : tmp->right);
+                return (iterator(tmp));
             }
 
-            void makeEmpty () { makeEmpty(this->_root); }
+            const_iterator find(const value_type &to_find) const
+            {
+                node *tmp = this->_root;
 
-            void printTree() { printBT("", this->_root, false); }
+                if (tmp == NULL)
+                    return (NULL);
+                while (tmp != NULL && tmp->value.first != to_find.first)
+                    tmp = (Compare()(to_find.first, tmp->value.first) ? tmp->left : tmp->right);
+                return (const_iterator(tmp));
+            }
+
+            iterator begin() { return (iterator(findMin(this->_root), this)); }
+            const_iterator begin() const { return (const_iterator(findMin(this->_root), this)); }
+
+            iterator end() { return (iterator(NULL, this)); }
+            const_iterator end() const { return (const_iterator(NULL, this)); }
+
 
             node *clone( node *t )
             {
@@ -444,6 +451,8 @@ namespace ft {
                     return (tmp);
                 }
             }
+
+            void printTree() { printBT("", this->_root, false); }
     };
 }
 
