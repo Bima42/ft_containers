@@ -258,16 +258,16 @@ namespace ft {
              *
              * @param t : starting with root
              */
-            void makeEmpty( node*& t )
+            void makeEmpty( node *&root )
             {
-                if (t != NULL)
+                if (root != NULL)
                 {
-                    makeEmpty( t->left );
-                    makeEmpty( t->right );
-                    _alloc.destroy(t);
-                    _alloc.deallocate(t, 1);
+                    makeEmpty( root->left );
+                    makeEmpty( root->right );
+                    _alloc.destroy(root);
+                    _alloc.deallocate(root, 1);
                 }
-                t = NULL;
+                root = NULL;
             }
 
             void printBT(const std::string& prefix, const Node* node, bool isLeft)
@@ -330,9 +330,9 @@ namespace ft {
             * @param t : is the node that roots the subtree.
             * Set the new root of the subtree.
             */
-            iterator insert(const value_type &x)
+            iterator insert(const value_type &to_insert)
             {
-                node* tmp = insert(_root, NULL, x);
+                node* tmp = insert(_root, NULL, to_insert);
                 if (isEmpty())
                     this->_root = tmp;
                 return iterator(tmp, this); // iterator required two args
@@ -340,18 +340,18 @@ namespace ft {
 
             /** insert() : Public who calls the private methods
              *
-             * @param x : value_type to erase
+             * @param to_remove : value_type to erase
              */
-            void remove (const value_type &x) { remove(x, this->_root); }
+            void remove (const value_type &to_remove) { remove(to_remove, this->_root); }
 
             /** findMin() : Internal method to find the smallest item in a subtree t.
              *
-             * @param t : subtree
+             * @param root : starting with root to iterator all the tree
              * @return : node containing the smallest item.
              */
-            node *findMin(node *t) const
+            node *findMin(node *root) const
             {
-                node *tmp = t;
+                node *tmp = root;
 
                 if (isEmpty())
                     return NULL;
@@ -364,12 +364,12 @@ namespace ft {
 
             /** findMax() : Internal method to find the largest item in a subtree t.
              *
-             * @param t : subtree
+             * @param root : starting with root to iterator all the tree
              * @return : node containing the largest item.
              */
-            node *findMax(node *t) const
+            node *findMax(node *root) const
             {
-                node *tmp = t;
+                node *tmp = root;
 
                 if (isEmpty())
                     return NULL;
@@ -439,15 +439,19 @@ namespace ft {
             iterator end() { return (iterator(NULL, this)); }
             const_iterator end() const { return (const_iterator(NULL, this)); }
 
-
-            node *clone( node *t )
+            /** clone() : recursive function who clone all node in a tree
+             *
+             * @param root : starting root to iterate entire tree
+             * @return : root node
+             */
+            node *clone( node *root )
             {
-                if (t == NULL)
+                if (root == NULL)
                     return NULL;
                 else
                 {
                     node *tmp = _alloc.allocate(1);
-                    _alloc.construct(tmp, node(t->value, clone(t->left), clone(t->right), t->parent));
+                    _alloc.construct(tmp, node(root->value, clone(root->left), clone(root->right), root->parent));
                     return (tmp);
                 }
             }
