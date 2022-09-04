@@ -252,14 +252,50 @@ namespace ft {
                     _alloc.deallocate(oldNode, 1);
                 }
             }
-            
+
+            /** makeEmpty() : method to make subtree empty.
+             *
+             * @param t : starting with root
+             */
+            void makeEmpty( node*& t )
+            {
+                if (t != NULL)
+                {
+                    makeEmpty( t->left );
+                    makeEmpty( t->right );
+                    _alloc.destroy(t);
+                    _alloc.deallocate(t, 1);
+                }
+                t = NULL;
+            }
+
+
+            void printBT(const std::string& prefix, const Node* node, bool isLeft)
+            {
+                if ( node != NULL )
+                {
+                    std::cout << prefix;
+
+                    std::cout << (isLeft ? "├──" : "└──" );
+
+                    // print the value of the node
+                    std::cout << node->value.first << std::endl;
+
+                    // enter the next tree level - left and right branch
+                    printBT( prefix + (isLeft ? "│   " : "    "), node->left, true);
+                    printBT( prefix + (isLeft ? "│   " : "    "), node->right, false);
+                }
+            }
+
+        public:
+
             typedef BstIterator<value_type>                 iterator;
             typedef BstIterator<const value_type>           const_iterator;
 
             BinarySearchTree( ) : _root(NULL) {}
 
             /* Copy constructor */
-            BinarySearchTree( const BinarySearchTree & rhs ) : _root(NULL) {
+            BinarySearchTree( const BinarySearchTree &rhs ) : _root(NULL) {
                 _root = clone( rhs._root );
             }
 
@@ -278,20 +314,34 @@ namespace ft {
                 return (*this);
             }
 
-            node *getRoot () const
-            {
-                return this->_root;
-            }
-
+            node *getRoot () const { return this->_root; }
 
             /** isEmpty() : Test if the tree is logically empty.
              *
              * @return : true if empty, false otherwise.
              */
-            bool isEmpty( ) const
+            bool isEmpty( ) const { return (_root == NULL); }
+
+            /** insert() : Internal method to insert into a subtree.
+            *
+            * @param x : is the item to insert.
+            * @param t : is the node that roots the subtree.
+            * Set the new root of the subtree.
+            */
+            iterator insert(const value_type &x)
             {
-                return (_root == NULL);
+                node* tmp = insert(_root, NULL, x);
+                if (isEmpty())
+                    this->_root = tmp;
+                //reSetParent(_root);
+                return iterator(tmp, this);
             }
+
+            /** insert() : Public who calls the private methods
+             *
+             * @param x : value_type to erase
+             */
+            void remove (const value_type &x) { remove(x, this->_root); }
 
             /** findMin() : Internal method to find the smallest item in a subtree t.
              *
@@ -360,19 +410,6 @@ namespace ft {
                 }
             *****************************************************/
 
-            /** insert() : Internal method to insert into a subtree.
-             *
-             * @param x : is the item to insert.
-             * @param t : is the node that roots the subtree.
-             * Set the new root of the subtree.
-             */
-            iterator insert(const value_type &x) {
-                node* tmp = insert(_root, NULL, x);
-                if (isEmpty())
-                    this->_root = tmp;
-                //reSetParent(_root);
-                return iterator(tmp, this);
-            }
 
             /** reSetParent() : Reorganize all parent pointer inside the tree, recursively
              *
@@ -392,30 +429,21 @@ namespace ft {
                 }
             }
 
-            // TODO : Check returns of remove
-            void remove (const value_type &x)
+            void makeEmpty () { makeEmpty(this->_root); }
+
+            void printTree() { printBT("", this->_root, false); }
+
+            node *clone( node *t )
             {
-                remove(x, this->_root);
-            }
-
-
-
-            /** makeEmpty() : method to make subtree empty.
-             *
-             * @param t : starting with root
-             */
-            void makeEmpty( node*& t )
-            {
-                if (t != NULL)
+                if (t == NULL)
+                    return NULL;
+                else
                 {
-                    makeEmpty( t->left );
-                    makeEmpty( t->right );
-                    _alloc.destroy(t);
-                    _alloc.deallocate(t, 1);
+                    node *tmp = _alloc.allocate(1);
+                    _alloc.construct(tmp, node(t->value, clone(t->left), clone(t->right), t->parent));
+                    return (tmp);
                 }
-                t = NULL;
             }
-
     };
 }
 

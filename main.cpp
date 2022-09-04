@@ -40,6 +40,7 @@ int main () {
 
     test.insert(test2);
     test.insert(test3);
+    test.insert(test4);
 
     std::cout << "Contains test2 ? " << test.containsKey(test2, test.getRoot()) << std::endl;
     std::cout << "Contains test3 ? " << test.containsKey(test3, test.getRoot()) << std::endl;
@@ -48,6 +49,13 @@ int main () {
     test.remove(test2);
 
     std::cout << "Contains test2 ? " << test.containsKey(test2, test.getRoot()) << std::endl;
+    std::cout << "Min : " << test.findMin(test.getRoot())->value.first << std::endl;
+    std::cout << "Max : " << test.findMax(test.getRoot())->value.first << std::endl;
+
+    test.printTree();
+    ft::BinarySearchTree< ft::pair<int, int>, int > copy(test);
+    copy.printTree();
+
     //int i = 0;
 
     //ft::vector<int> ft2(10, 100);
