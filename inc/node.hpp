@@ -10,16 +10,17 @@ namespace ft {
     struct Node {
 
         typedef T value_type;
+
         value_type value;
-        Node<value_type> *parent;
-        Node<value_type> *left;
-        Node<value_type> *right;
+        Node *left;
+        Node *right;
+        Node *parent;
 
         Node(const value_type &insert_value, Node *lft, Node *rgt, Node *prt) :
                 value(insert_value),
-                parent(prt),
                 left(lft),
-                right(rgt) {}
+                right(rgt),
+                parent(prt) {}
 
     };
 }
