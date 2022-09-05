@@ -22,14 +22,16 @@ namespace ft {
      *  Template T : we gonna use this BST for Map, which uses pair to store data
      *      - value_type is a pair
      */
-    //     template < class T, class Key, class Compare = std::less<Key>, class Node = ft::Node<T>,
-    //                class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
-    template < class T, class Compare, class Node = ft::Node<T>,
-                class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
+
+    //template < class T, class Compare, class Node = ft::Node<T>,
+    //class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
+
+    template < class T, class Key, class Compare = std::less<Key>, class Node = ft::Node<T>, class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
     class BinarySearchTree {
 
         public:
             typedef T           value_type;
+            typedef Key         key_type;
             typedef Node        node;
             typedef Alloc       allocator_type;
             typedef Node_Alloc  node_alloc;
@@ -205,21 +207,24 @@ namespace ft {
              * @param root : start with root, then iterator inside
              * @param parent : parent of the current root
              * @param to_insert : value_type to_insert in our tree
+             * @param is_added : boolean who comes true if an element is inserted
              * @return
              */
-            node *insert(node *&root, node *parent, const value_type &to_insert)
+            node *insert(node *&root, node *parent, const value_type &to_insert, bool &is_added)
             {
                 if (root == NULL)
                 {
                     root = _alloc.allocate(1);
                     _alloc.construct(root, node(to_insert, NULL, NULL, parent));
+                    is_added = true;
                     return (root);
                 }
                 else if (Compare()(to_insert.first, root->value.first)) // to_insert.first < root->value.first : left
                     return (insert(root->left, root, to_insert));
                 else if (Compare()(root->value.first, to_insert.first)) // to_insert.first > root->value.first : left
                     return (insert(root->right, root, to_insert));
-                return (root);
+                else
+                    return (root);
             }
 
             /** remove () Internal method to remove from a subtree.
@@ -332,15 +337,13 @@ namespace ft {
             * @param t : is the node that roots the subtree.
             * Set the new root of the subtree.
             */
-            iterator insert(const value_type &to_insert)
+            iterator insert(const value_type &to_insert, bool &is_added)
             {
-                node* tmp = insert(_root, NULL, to_insert);
-                if (isEmpty())
-                    this->_root = tmp;
+                node* tmp = insert(_root, NULL, to_insert, is_added);
                 return iterator(tmp, this); // iterator required two args
             }
 
-            /** insert() : Public who calls the private methods
+            /** remove() : Public who calls the private methods
              *
              * @param to_remove : value_type to erase
              */
@@ -423,10 +426,10 @@ namespace ft {
                 node *tmp = this->_root;
 
                 if (tmp == NULL)
-                    return (NULL);
+                    return (end());
                 while (tmp != NULL && tmp->value.first != to_find.first)
                     tmp = (Compare()(to_find.first, tmp->value.first) ? tmp->left : tmp->right);
-                return (iterator(tmp));
+                return (iterator(tmp, this)); // First constructor of iterator need node + tree
             }
 
             const_iterator find(const value_type &to_find) const
@@ -434,10 +437,10 @@ namespace ft {
                 node *tmp = this->_root;
 
                 if (tmp == NULL)
-                    return (NULL);
+                    return (end());
                 while (tmp != NULL && tmp->value.first != to_find.first)
                     tmp = (Compare()(to_find.first, tmp->value.first) ? tmp->left : tmp->right);
-                return (const_iterator(tmp));
+                return (const_iterator(tmp, this));
             }
 
             /** clone() : recursive function who clone all node in a tree
@@ -467,6 +470,42 @@ namespace ft {
 
             iterator end() { return (iterator(NULL, this)); }
             const_iterator end() const { return (const_iterator(NULL, this)); }
+
+            void swap(BinarySearchTree &x)
+            {
+                if (this != &x) {
+                    node_alloc tmp_alloc = this->_alloc;
+                    node *tmp_root = this->_root;
+
+                    this->_alloc = x._alloc;
+                    this->_root = x._root;
+
+                    x._alloc = tmp_alloc;
+                    x._root = tmp_root;
+                }
+            }
+
+            iterator find(const key_type &to_find)
+            {
+                node *tmp = this->_root;
+
+                if (tmp == NULL)
+                    return (end());
+                while (tmp != NULL && tmp->value.first != to_find)
+                    tmp = (Compare()(to_find, tmp->value.first) ? tmp->left : tmp->right);
+                return (iterator(tmp, this));
+            }
+
+            const_iterator find(const key_type &to_find) const
+            {
+                node *tmp = this->_root;
+
+                if (tmp == NULL)
+                    return (end());
+                while (tmp != NULL && tmp->value.first != to_find)
+                    tmp = (Compare()(to_find, tmp->value.first) ? tmp->left : tmp->right);
+                return (const_iterator(tmp, this));
+            }
     };
 }
 
