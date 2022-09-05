@@ -22,7 +22,9 @@ namespace ft {
      *  Template T : we gonna use this BST for Map, which uses pair to store data
      *      - value_type is a pair
      */
-    template < class T, class Key, class Compare = std::less<Key>, class Node = ft::Node<T>,
+    //     template < class T, class Key, class Compare = std::less<Key>, class Node = ft::Node<T>,
+    //                class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
+    template < class T, class Compare, class Node = ft::Node<T>,
                 class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
     class BinarySearchTree {
 
@@ -292,10 +294,10 @@ namespace ft {
             typedef BstIterator<value_type>                 iterator;
             typedef BstIterator<const value_type>           const_iterator;
 
-            BinarySearchTree( ) : _root(NULL) {}
+            BinarySearchTree() : _root(NULL) {}
 
             /* Copy constructor */
-            BinarySearchTree( const BinarySearchTree &rhs ) : _root(NULL) {
+            BinarySearchTree(const BinarySearchTree &rhs) : _root(NULL) {
                 _root = clone( rhs._root );
             }
 
@@ -411,6 +413,11 @@ namespace ft {
                 }
             *****************************************************/
 
+            /** find() : Function who find a value_type
+             *
+             * @param to_find : value_type to find
+             * @return : iterator of the value_type to_find
+             */
             iterator find(const value_type &to_find)
             {
                 node *tmp = this->_root;
@@ -433,12 +440,6 @@ namespace ft {
                 return (const_iterator(tmp));
             }
 
-            iterator begin() { return (iterator(findMin(this->_root), this)); }
-            const_iterator begin() const { return (const_iterator(findMin(this->_root), this)); }
-
-            iterator end() { return (iterator(NULL, this)); }
-            const_iterator end() const { return (const_iterator(NULL, this)); }
-
             /** clone() : recursive function who clone all node in a tree
              *
              * @param root : starting root to iterate entire tree
@@ -457,6 +458,15 @@ namespace ft {
             }
 
             void printTree() { printBT("", this->_root, false); }
+
+            /* ********************************************************************************
+             *                      FUNCTIONS FOR OUR MAP IMPLEMENTATION                      *
+             **********************************************************************************/
+            iterator begin() { return (iterator(findMin(this->_root), this)); }
+            const_iterator begin() const { return (const_iterator(findMin(this->_root), this)); }
+
+            iterator end() { return (iterator(NULL, this)); }
+            const_iterator end() const { return (const_iterator(NULL, this)); }
     };
 }
 

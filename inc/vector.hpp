@@ -25,7 +25,7 @@ namespace ft {
             typedef ft::reverse_iterator<iterator>                  reverse_iterator;
             typedef ft::reverse_iterator<const_iterator>            const_reverse_iterator;
             typedef size_t                                          size_type;
-            typedef ft::iterator_traits<iterator>                   difference_type;
+            typedef ft::iterator_traits<iterator>::difference_type  difference_type;
 
         /*
          * value_type               : type of the element(s) the vector will hold
@@ -113,6 +113,7 @@ namespace ft {
             /* Operator= overload : assign each element of vector given in parameter to the container
              * Replace content and according size
              * Have to clear the content of the previous container
+             * TODO : use insert()
              */
             vector &operator=(const vector &x)
             {
@@ -492,14 +493,14 @@ namespace ft {
                 {
                     size_type new_end = _size + n;
                     for (iterator end_scope = this->end(); end_scope != position; end_scope--)
-                    {
                         _alloc.construct(_vec + new_end--, *end_scope);
-                    }
                     _alloc.construct(_vec + new_end, *position);
+
                     for (size_type i = 0;i < n; i++)
                     {
                         *(position + i) = *first++;
                     }
+
                     _size += n;
                 }
 
