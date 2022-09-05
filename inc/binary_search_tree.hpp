@@ -35,6 +35,7 @@ namespace ft {
             typedef Node        node;
             typedef Alloc       allocator_type;
             typedef Node_Alloc  node_alloc;
+            typedef size_t      size_type;
 
         template <typename P>
         class BstIterator : public ft::iterator<ft::bidirectional_iterator_tag, value_type> {
@@ -220,9 +221,9 @@ namespace ft {
                     return (root);
                 }
                 else if (Compare()(to_insert.first, root->value.first)) // to_insert.first < root->value.first : left
-                    return (insert(root->left, root, to_insert));
+                    return (insert(root->left, root, to_insert, is_added));
                 else if (Compare()(root->value.first, to_insert.first)) // to_insert.first > root->value.first : left
-                    return (insert(root->right, root, to_insert));
+                    return (insert(root->right, root, to_insert, is_added));
                 else
                     return (root);
             }
@@ -247,6 +248,34 @@ namespace ft {
                     n->value = tmp->value;
 
                     remove( n->value, n->right );
+                }
+                else
+                {
+                    node *oldNode = n;
+
+                    n = ( n->left != NULL ) ? n->left : n->right;
+                    // re Set parent !
+                    if (n)
+                        n->parent = oldNode->parent;
+                    _alloc.destroy(oldNode);
+                    _alloc.deallocate(oldNode, 1);
+                }
+            }
+
+            void remove( const key_type &x, node *&n )
+            {
+                if ( n == NULL )
+                    return;   // Item not found; do nothing
+                if ( Compare()(x, n->value.first) )
+                    remove( x, n->left );
+                else if ( Compare()(n->value.first, x) )
+                    remove( x, n->right );
+                else if ( n->left != NULL && n->right != NULL ) // Two children
+                {
+                    node *tmp = findMin(n->right);
+                    n->value = tmp->value;
+
+                    remove( n->value.first, n->right );
                 }
                 else
                 {
@@ -348,6 +377,7 @@ namespace ft {
              * @param to_remove : value_type to erase
              */
             void remove (const value_type &to_remove) { remove(to_remove, this->_root); }
+            void remove (const key_type &to_remove) { remove(to_remove, this->_root); }
 
             /** findMin() : Internal method to find the smallest item in a subtree t.
              *
@@ -390,14 +420,14 @@ namespace ft {
              * @param t : is the node that roots the subtree.
              * @return : true if find
              */
-            bool containsKey( const value_type &x, node *t ) const
+            bool contains( const value_type &x, node *t ) const
             {
                 if (t == NULL)
                     return (false);
                 else if( Compare()(x.first, t->value.first) )
-                    return containsKey( x, t->left );
+                    return contains( x, t->left );
                 else if( Compare()(t->value.first, x.first) )
-                    return containsKey( x, t->right );
+                    return contains( x, t->right );
                 else
                     return (true);    // Match
             }
@@ -485,6 +515,11 @@ namespace ft {
                 }
             }
 
+            /** find() : Function who find a key_type
+            *
+            * @param to_find : key_type to find
+            * @return : iterator of the key_type to_find
+            */
             iterator find(const key_type &to_find)
             {
                 node *tmp = this->_root;
@@ -505,6 +540,29 @@ namespace ft {
                 while (tmp != NULL && tmp->value.first != to_find)
                     tmp = (Compare()(to_find, tmp->value.first) ? tmp->left : tmp->right);
                 return (const_iterator(tmp, this));
+            }
+
+            /** containsKey() : same as contains() but use a key_type as item to find
+             *
+             * @param x : key_type to find
+             * @return : 1 if found, 0 otherwise
+             */
+            size_type containsKey( const key_type &x ) const
+            {
+                node *t = this->_root;
+
+                if (t == NULL)
+                    return (0);
+                while (t != NULL && x != t->value.first)
+                {
+                    if ( Compare()(x, t->value.first) )
+                        t = t->left;
+                    else if( Compare()(t->value.first, x.first) )
+                        t = t->right;
+                    else
+                        return (1);
+                }
+                return (0);
             }
     };
 }

@@ -26,12 +26,12 @@ namespace ft {
             typedef typename allocator_type::reference          reference;
             typedef typename allocator_type::const_reference    const_reference;
 
-            typedef typename ft::BinarySearchTree<value_type, key_compare>::iterator        iterator;
-            typedef typename ft::BinarySearchTree<value_type, key_compare>::const_iterator  const_iterator;
-            typedef typename ft::reverse_iterator<iterator>                                 reverse_iterator;
-            typedef typename ft::reverse_iterator<const_iterator>                           const_reverse_iterator;
-            typedef size_t                                                                  size_type;
-            typedef typename ft::iterator_traits<iterator>::difference_type                 difference_type;
+            typedef typename ft::BinarySearchTree<value_type, key_type>::iterator       iterator;
+            typedef typename ft::BinarySearchTree<value_type, key_type>::const_iterator const_iterator;
+            typedef typename ft::reverse_iterator<iterator>                             reverse_iterator;
+            typedef typename ft::reverse_iterator<const_iterator>                       const_reverse_iterator;
+            typedef size_t                                                              size_type;
+            typedef typename ft::iterator_traits<iterator>::difference_type             difference_type;
 
             // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
             class value_compare : public std::binary_function<value_type, value_type, bool>
@@ -232,8 +232,12 @@ namespace ft {
                 }
             }
 
-            //void erase(iterator position);
-            //size_type erase(const key_type &x);
+            void erase(iterator position) { _bstree.remove(*position); }
+
+            //size_type erase(const key_type &x)
+            //{
+            //
+            //}
             //void erase(iterator first, iterator last);
 
             //void clear();
@@ -253,7 +257,7 @@ namespace ft {
             iterator find(const key_type &x) { return (_bstree.find(x)); }
             const_iterator find(const key_type &x) const { return (_bstree.find(x)); }
 
-            //size_type count(const key_type &x) const;
+            size_type count(const key_type &x) const { return (_bstree.containsKey(x)); }
 
             //iterator lower_bound(const key_type &x);
             //const_iterator lower_bound(const key_type &x) const;
@@ -263,6 +267,11 @@ namespace ft {
 
             //ft:pair<iterator, iterator> equal_range(const key_type &x);
             //ft::pair<const_iterator, const_iterator> equal_range(const key_type &x) const;
+
+            /* *****************************************************************************
+             *                                 CUSTOMS                                     *
+             *******************************************************************************/
+            void printTree() { _bstree.printTree(); }
 
     };
 }
