@@ -232,15 +232,44 @@ namespace ft {
                 }
             }
 
-            void erase(iterator position) { _bstree.remove(*position); }
+            void erase(iterator position)
+            {
+                bool is_removed = true;
 
-            //size_type erase(const key_type &x)
-            //{
-            //
-            //}
-            //void erase(iterator first, iterator last);
+                _bstree.remove(*position, is_removed);
+                if (is_removed == true)
+                    this->_size -= 1;
+            }
 
-            //void clear();
+            size_type erase(const key_type &x)
+            {
+                bool is_removed = true;
+
+                _bstree.remove(x, is_removed);
+                if (is_removed == true) {
+                    this->_size -= 1;
+                    return (1);
+                }
+                return (0);
+            }
+
+            void erase(iterator first, iterator last)
+            {
+                bool is_removed = true;
+
+                while (first != last)
+                {
+                    _bstree.remove(*first++, is_removed);
+                    if (is_removed == true)
+                        this->_size -= 1;
+                    is_removed = false;
+                }
+            }
+
+            void clear()
+            {
+                erase(this->begin(), this->end());
+            }
 
             /* *****************************************************************************
              *                                 OBSERVERS                                   *
@@ -259,11 +288,47 @@ namespace ft {
 
             size_type count(const key_type &x) const { return (_bstree.containsKey(x)); }
 
-            //iterator lower_bound(const key_type &x);
-            //const_iterator lower_bound(const key_type &x) const;
+            /** lower_bound() :  .**
+             *
+             * @param k : key to find
+             * @return : iterator to the the first element in the container whose key is not considered to go before k
+             * ( it is equivalent or goes after), or map::end if all keys are considered to go before k
+             */
+            iterator lower_bound(const key_type &k)
+            {
+                iterator it = begin();
 
-            //iterator upper_bound(const key_type &x);
-            //const_iterator upper_bound(const key_type &x) const;
+                while (it != end())
+                {
+                    if (_comp((*it).first, k) == false) // *it.first < k == false : we use this semantic to include (*it)).first == k
+                        return (it);
+                    it++;
+                }
+                return (it);
+            }
+
+            const_iterator lower_bound(const key_type &k) const
+            {
+                return (const_iterator(lower_bound(k)));
+            }
+
+            iterator upper_bound(const key_type &k)
+            {
+                iterator it = begin();
+
+                while (it != end())
+                {
+                    if (_comp(k, (*it).first)) // k < *it.first : we use this semantic to exclude k == (*it)).first
+                        return (it);
+                    it++;
+                }
+                return (it);
+            }
+
+            const_iterator upper_bound(const key_type &k) const
+            {
+                return (const_iterator(upper_bound(k)));
+            }
 
             //ft:pair<iterator, iterator> equal_range(const key_type &x);
             //ft::pair<const_iterator, const_iterator> equal_range(const key_type &x) const;
@@ -271,7 +336,7 @@ namespace ft {
             /* *****************************************************************************
              *                                 CUSTOMS                                     *
              *******************************************************************************/
-            void printTree() { _bstree.printTree(); }
+            void printMap() { _bstree.printTree(); }
 
     };
 }

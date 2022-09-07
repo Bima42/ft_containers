@@ -40,11 +40,8 @@ namespace ft {
         template <typename P>
         class BstIterator : public ft::iterator<ft::bidirectional_iterator_tag, value_type> {
 
-            public:
-                BstIterator() : _nodePtr(NULL), _treePtr(NULL) {};
-                BstIterator(const node *n, const BinarySearchTree *t) : _nodePtr(n), _treePtr(t) {};
-                BstIterator(const BstIterator &rhs) : _nodePtr(rhs._nodePtr), _treePtr(rhs._treePtr) {}
-                ~BstIterator() {}
+            public :
+                typedef P   value_type;
 
             private:
                 friend class BinarySearchTree;
@@ -59,6 +56,12 @@ namespace ft {
                 const BinarySearchTree *_treePtr;
 
             public:
+
+                BstIterator() : _nodePtr(NULL), _treePtr(NULL) {};
+                BstIterator(const node *n, const BinarySearchTree *t) : _nodePtr(n), _treePtr(t) {};
+                BstIterator(const BstIterator &rhs) : _nodePtr(rhs._nodePtr), _treePtr(rhs._treePtr) {}
+                ~BstIterator() {}
+
                 BstIterator &operator=(const BstIterator &rhs)
                 {
                     if (this == &rhs)
@@ -73,6 +76,18 @@ namespace ft {
                     return (BstIterator<const P>(this->_nodePtr, this->_treePtr));
                 }
 
+                /** dereference operator
+                 *
+                 * @return : return a reference to the value pointed to by nodePtr
+                 */
+                const P& operator* () const { return (_nodePtr->value); }
+
+                /** pointer operator
+                 *
+                 * @return : return a pointer to the value pointed to by nodePtr
+                 */
+                const P* operator->() const { return (&(_nodePtr->value)); }
+
                 // comparison operators. just compare node pointers
                 bool operator== (const BstIterator &rhs) const
                 {
@@ -84,15 +99,8 @@ namespace ft {
                     return (this->_nodePtr != rhs._nodePtr);
                 }
 
-                // dereference operator. return a reference to
-                // the value pointed to by nodePtr
-                const value_type &operator* () const
-                {
-                    return (this->_nodePtr->value);
-                }
-
                 // preincrement. move forward to next larger value
-                BstIterator& operator++ ()
+                BstIterator &operator++ ()
                 {
                     node *p;
 
@@ -234,20 +242,23 @@ namespace ft {
             * @param t is the node that roots the subtree.
             * Set the new root of the subtree.
             */
-            void remove( const value_type &x, node *&n )
+            void remove( const value_type &x, node *&n, bool &is_removed )
             {
                 if ( n == NULL )
+                {
+                    is_removed = false;
                     return;   // Item not found; do nothing
+                }
                 if ( Compare()(x.first, n->value.first) )
-                    remove( x, n->left );
+                    remove( x, n->left, is_removed );
                 else if ( Compare()(n->value.first, x.first) )
-                    remove( x, n->right );
+                    remove( x, n->right, is_removed );
                 else if( n->left != NULL && n->right != NULL ) // Two children
                 {
                     node *tmp = findMin(n->right);
                     n->value = tmp->value;
 
-                    remove( n->value, n->right );
+                    remove( n->value, n->right, is_removed );
                 }
                 else
                 {
@@ -262,20 +273,23 @@ namespace ft {
                 }
             }
 
-            void remove( const key_type &x, node *&n )
+            void remove( const key_type &x, node *&n, bool &is_removed )
             {
                 if ( n == NULL )
+                {
+                    is_removed = false;
                     return;   // Item not found; do nothing
+                }
                 if ( Compare()(x, n->value.first) )
-                    remove( x, n->left );
+                    remove( x, n->left, is_removed );
                 else if ( Compare()(n->value.first, x) )
-                    remove( x, n->right );
+                    remove( x, n->right, is_removed );
                 else if ( n->left != NULL && n->right != NULL ) // Two children
                 {
                     node *tmp = findMin(n->right);
                     n->value = tmp->value;
 
-                    remove( n->value.first, n->right );
+                    remove( n->value.first, n->right, is_removed );
                 }
                 else
                 {
@@ -376,8 +390,8 @@ namespace ft {
              *
              * @param to_remove : value_type to erase
              */
-            void remove (const value_type &to_remove) { remove(to_remove, this->_root); }
-            void remove (const key_type &to_remove) { remove(to_remove, this->_root); }
+            void remove (const value_type &to_remove, bool &is_removed) { remove(to_remove, this->_root, is_removed); }
+            void remove (const key_type &to_remove, bool &is_removed) { remove(to_remove, this->_root, is_removed); }
 
             /** findMin() : Internal method to find the smallest item in a subtree t.
              *
