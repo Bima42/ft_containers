@@ -277,7 +277,7 @@ namespace ft {
 
             key_compare key_comp() const { return (key_compare()); }
 
-            value_compare value_comp() const { return (value_compare(key_compare)); }
+            value_compare value_comp() const { return (value_compare(key_compare())); }
 
             /* *****************************************************************************
              *                                 OBSERVERS                                   *
