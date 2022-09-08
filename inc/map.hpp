@@ -40,7 +40,7 @@ namespace ft {
 
             protected:
                 Compare comp;
-                value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+                value_compare(Compare c) : comp(c) {}  // constructed with map's comparison object
 
             public:
                 /** Compares x.first and y.first by calling the stored key comparison function comp.
@@ -275,9 +275,9 @@ namespace ft {
              *                                 OBSERVERS                                   *
              *******************************************************************************/
 
-            //key_compare key_comp() const;
+            key_compare key_comp() const { return (key_compare()); }
 
-            //value_compare value_comp() const;
+            value_compare value_comp() const { return (value_compare(key_compare)); }
 
             /* *****************************************************************************
              *                                 OBSERVERS                                   *

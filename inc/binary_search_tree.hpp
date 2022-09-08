@@ -42,14 +42,11 @@ namespace ft {
         class BstIterator {
 
             public :
-//                typedef P               value_type;
-//                typedef P*              pointer;
-//                typedef P&              reference;
                 typedef P    value_type;
-                typedef std::ptrdiff_t  difference_type;
                 typedef P*   pointer;
                 typedef P& reference;
-                typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
+                typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type      difference_type;
+                typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category    iterator_category;
 
             private:
                 friend class BinarySearchTree;

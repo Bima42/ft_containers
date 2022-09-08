@@ -1,7 +1,8 @@
 #include "inc/vector.hpp"
-#include "inc/node.hpp"
-#include "inc/binary_search_tree.hpp"
+#include "inc/map.hpp"
 #include <vector>
+#include <list>
+#include <map>
 #include <memory>
 
 
@@ -16,8 +17,234 @@ void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
         ft_eq_ope(second, first, 0);
 }*/
 
+template <typename T>
+class foo {
+public:
+    typedef T	value_type;
+
+    foo(void) : value(), _verbose(false) { };
+    foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
+    foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
+    ~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
+    void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+    void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+    foo &operator=(value_type src) { this->value = src; return *this; };
+    foo &operator=(foo const &src) {
+        if (this->_verbose || src._verbose)
+            std::cout << "foo::operator=(foo) CALLED" << std::endl;
+        this->value = src.value;
+        return *this;
+    };
+    value_type	getValue(void) const { return this->value; };
+    void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+
+    operator value_type(void) const {
+        return value_type(this->value);
+    }
+private:
+    value_type	value;
+    bool		_verbose;
+};
+
+#define T1 int
+#define T2 foo<int>
+typedef ft::map<T1, T2>::value_type T3;
+typedef ft::map<T1, T2>::iterator ft_iterator;
+typedef ft::map<T1, T2>::const_iterator ft_const_iterator;
+
+static int iter = 0;
+
+template <typename T>
+std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
+{
+    o << "key: " << iterator->first << " | value: " << iterator->second;
+    if (nl)
+        o << std::endl;
+    return ("");
+}
+
+template <typename MAP>
+void	ft_bound(MAP &mp, const T1 &param)
+{
+    ft_iterator ite = mp.end(), it[2];
+    ft::pair<ft_iterator, ft_iterator> ft_range;
+
+    std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+    std::cout << "with key [" << param << "]:" << std::endl;
+    it[0] = mp.lower_bound(param); it[1] = mp.upper_bound(param);
+    ft_range = mp.equal_range(param);
+    std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+    std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+    std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
+template <typename MAP>
+void	ft_const_bound(const MAP &mp, const T1 &param)
+{
+    ft_const_iterator ite = mp.end(), it[2];
+    ft::pair<ft_const_iterator, ft_const_iterator> ft_range;
+
+    std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
+    std::cout << "with key [" << param << "]:" << std::endl;
+    it[0] = mp.lower_bound(param); it[1] = mp.upper_bound(param);
+    ft_range = mp.equal_range(param);
+    std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+    std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+    std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
 
 int main () {
+    std::list<T3> lst;
+    unsigned int lst_size = 10;
+    for (unsigned int i = 0; i < lst_size; ++i)
+        lst.push_back(T3(i + 1, (i + 1) * 3));
+    ft::map<T1, T2> mp(lst.begin(), lst.end());
+
+    ft_const_bound(mp, -10);
+    ft_const_bound(mp, 1);
+    ft_const_bound(mp, 5);
+    ft_const_bound(mp, 10);
+    ft_const_bound(mp, 50);
+
+
+    mp.lower_bound(3)->second = 404;
+    mp.upper_bound(7)->second = 842;
+    ft_bound(mp, 5);
+    ft_bound(mp, 7);
+
+    /*{
+        ft::map<int, int>::iterator it;
+        it->first = 1;
+
+        ft::map<int, int> test;
+        int i = 12;
+        int u = 25;
+        ft::pair<int, int> test_pair = ft::make_pair(i, u);
+        i = u + i;
+        u += 199;
+        ft::pair<int, int> test_pair2 = ft::make_pair(i, u);
+        i = u + i;
+        u += 199;
+        ft::pair<int, int> test_pair3 = ft::make_pair(i, u);
+        i = 5;
+        u = 2;
+        ft::pair<int, int> test_pair4 = ft::make_pair(i, u);
+        i = 199;
+        u = 2000;
+        ft::pair<int, int> test_pair5 = ft::make_pair(i, u);
+        i = 3;
+        u = 2;
+        ft::pair<int, int> test_pair6 = ft::make_pair(i, u);
+        i = 8;
+        u = 20;
+        ft::pair<int, int> test_pair7 = ft::make_pair(i, u);
+        i = 38;
+        u = 20;
+        ft::pair<int, int> test_pair8 = ft::make_pair(i, u);
+
+        std::cout << "=======================FT_MAP================================" << std::endl;
+        std::cout << "Is test tree empty ? " << test.empty() << std::endl;
+        std::cout << "test pair 1: " << test_pair.first << " " << test_pair.second << std::endl;
+        std::cout << "test pair 2: " << test_pair2.first << " " << test_pair2.second << std::endl;
+        std::cout << "test pair 3: " << test_pair3.first << " " << test_pair3.second << std::endl;
+        std::cout << "test pair 4: " << test_pair4.first << " " << test_pair4.second << std::endl;
+        std::cout << "test pair 5: " << test_pair5.first << " " << test_pair5.second << std::endl;
+        std::cout << "test pair 6: " << test_pair6.first << " " << test_pair6.second << std::endl;
+        std::cout << "test pair 7: " << test_pair7.first << " " << test_pair7.second << std::endl;
+        std::cout << "test pair 8: " << test_pair8.first << " " << test_pair8.second << std::endl;
+        test.insert(test_pair);
+        test.insert(test_pair2);
+        test.insert(test_pair3);
+        test.insert(test_pair4);
+        test.insert(test_pair5);
+        test.insert(test_pair6);
+        test.insert(test_pair7);
+        test.insert(test_pair8);
+
+        std::cout << "Is test tree empty ? " << test.empty() << std::endl;
+        test.printMap();
+        std::cout << "Lower bound of 38 is :" << test.lower_bound(38)->first << std::endl;
+        std::cout << "Upper bound of 38 is :" << test.upper_bound(38)->first << std::endl;
+
+        std::cout << "Equal range 199 : " << test.equal_range(199).first->first << "  ||  " << test.equal_range(199).first->second << std::endl;
+        std::cout << "Equal range 199 : " << test.equal_range(199).second->first << "  ||  " << test.equal_range(199).second->second << std::endl;
+        //test.remove(test_pair);
+        //test.remove(test_pair3);
+
+        std::cout << "Find Pair 1 | 2 : " << test.find(test_pair4)->value.first << " | "
+                  << test.find(test_pair4)->value.second << " His parent is : " <<
+                  test.find(test_pair4)->parent->value.first <<
+                  " | " << test.find(test_pair4)->parent->value.second << std::endl;
+        test.printBT();
+        test.makeEmpty();
+        std::cout << "Is test tree empty ? " << test.isEmpty() << std::endl;
+        test.printBT();
+
+    }
+    {
+
+        std::map<int, int> test;
+        int i = 12;
+        int u = 25;
+        std::pair<int, int> test_pair = std::make_pair(i, u);
+        i = u + i;
+        u += 199;
+        std::pair<int, int> test_pair2 = std::make_pair(i, u);
+        i = u + i;
+        u += 199;
+        std::pair<int, int> test_pair3 = std::make_pair(i, u);
+        i = 1;
+        u = 2;
+        std::pair<int, int> test_pair4 = std::make_pair(i, u);
+        i = 199;
+        u = 2000;
+        std::pair<int, int> test_pair5 = std::make_pair(i, u);
+        i = 3;
+        u = 2;
+        std::pair<int, int> test_pair6 = std::make_pair(i, u);
+        i = 8;
+        u = 20;
+        std::pair<int, int> test_pair7 = std::make_pair(i, u);
+        i = 38;
+        u = 20;
+        std::pair<int, int> test_pair8 = std::make_pair(i, u);
+
+        std::cout << "=======================STD_MAP================================" << std::endl;
+        std::cout << "test pair 1: " << test_pair.first << " " << test_pair.second << std::endl;
+        std::cout << "test pair 2: " << test_pair2.first << " " << test_pair2.second << std::endl;
+        std::cout << "test pair 3: " << test_pair3.first << " " << test_pair3.second << std::endl;
+        std::cout << "test pair 4: " << test_pair4.first << " " << test_pair4.second << std::endl;
+        std::cout << "test pair 5: " << test_pair5.first << " " << test_pair5.second << std::endl;
+        test.insert(test_pair);
+        test.insert(test_pair2);
+        test.insert(test_pair3);
+        test.insert(test_pair4);
+        test.insert(test_pair5);
+        test.insert(test_pair6);
+        test.insert(test_pair7);
+        test.insert(test_pair8);
+        std::cout << "Lower bound of 38 is :" << test.lower_bound(38)->first << std::endl;
+        std::cout << "Upper bound of 38 is :" << test.upper_bound(38)->first << std::endl;
+
+        std::cout << "Equal range 199 : " << test.equal_range(199).first->first << "  ||  " << test.equal_range(199).first->second << std::endl;
+        std::cout << "Equal range 199 : " << test.equal_range(199).second->first << "  ||  " << test.equal_range(199).second->second << std::endl;
+
+    }*/
+
+    /*
+    ft::map<int, int> test;
+    int i = 10;
+    int u = 20;
+    ft::pair<int, int> pair1 = ft::make_pair(i, u);
+    ft::map<int, int>::iterator it = test.begin();
+
+    test.insert(it, pair1);
+    it = test.begin();
+    test.printTree();
+    std::cout << "size = " << test.size() << std::endl;
+    test.erase(it);
+
     ft::BinarySearchTree< ft::pair<int, int>, int > test;
     int i = 12;
     int u = 25;
@@ -73,7 +300,6 @@ int main () {
     //std::vector<int> test_std2(3, 50);
 
 
-/*
     std::vector<int> v_int1, v_int2, v_int3;
     std::vector<std::string> v_str1, v_str2;
     ft::vector<int> V_int1, V_int2, V_int3;
