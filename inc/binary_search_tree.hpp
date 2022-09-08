@@ -3,6 +3,7 @@
 
 #include "node.hpp"
 #include "pair.hpp"
+#include "iterator_traits.hpp"
 
 /*-----------------------------------------------------------------------------------------------*
  * THANKS GOD :                                                                                  *
@@ -38,10 +39,17 @@ namespace ft {
             typedef size_t      size_type;
 
         template <typename P>
-        class BstIterator : public ft::iterator<ft::bidirectional_iterator_tag, value_type> {
+        class BstIterator {
 
             public :
-                typedef P   value_type;
+//                typedef P               value_type;
+//                typedef P*              pointer;
+//                typedef P&              reference;
+                typedef P    value_type;
+                typedef std::ptrdiff_t  difference_type;
+                typedef P*   pointer;
+                typedef P& reference;
+                typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
 
             private:
                 friend class BinarySearchTree;
@@ -52,13 +60,13 @@ namespace ft {
                 // with this iterator. it is used only to access the
                 // root pointer, which is needed for ++ and --
                 // when the iterator value is end()
-                const node *_nodePtr;
+                node *_nodePtr;
                 const BinarySearchTree *_treePtr;
 
             public:
 
                 BstIterator() : _nodePtr(NULL), _treePtr(NULL) {};
-                BstIterator(const node *n, const BinarySearchTree *t) : _nodePtr(n), _treePtr(t) {};
+                BstIterator(node *n, const BinarySearchTree *t) : _nodePtr(n), _treePtr(t) {};
                 BstIterator(const BstIterator &rhs) : _nodePtr(rhs._nodePtr), _treePtr(rhs._treePtr) {}
                 ~BstIterator() {}
 
@@ -80,13 +88,13 @@ namespace ft {
                  *
                  * @return : return a reference to the value pointed to by nodePtr
                  */
-                const P& operator* () const { return (_nodePtr->value); }
+                reference operator* () const { return (_nodePtr->value); }
 
                 /** pointer operator
                  *
                  * @return : return a pointer to the value pointed to by nodePtr
                  */
-                const P* operator->() const { return (&(_nodePtr->value)); }
+                pointer operator->() const { return (&(_nodePtr->value)); }
 
                 // comparison operators. just compare node pointers
                 bool operator== (const BstIterator &rhs) const

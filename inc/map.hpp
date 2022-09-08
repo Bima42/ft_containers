@@ -91,7 +91,7 @@ namespace ft {
                  const allocator_type& alloc = allocator_type()) :
                  _alloc(alloc), _comp(comp), _bstree(), _size(0)
             {
-                // TODO : use insert() as vector
+                insert(first, last);
             }
 
             /** copy : Constructs a container with a copy of each of the elements in x
@@ -309,7 +309,15 @@ namespace ft {
 
             const_iterator lower_bound(const key_type &k) const
             {
-                return (const_iterator(lower_bound(k)));
+                const_iterator it = begin();
+
+                while (it != end())
+                {
+                    if (_comp((*it).first, k) == false) // *it.first < k == false : we use this semantic to include (*it)).first == k
+                        return (it);
+                    it++;
+                }
+                return (it);
             }
 
             iterator upper_bound(const key_type &k)
@@ -327,11 +335,26 @@ namespace ft {
 
             const_iterator upper_bound(const key_type &k) const
             {
-                return (const_iterator(upper_bound(k)));
+                const_iterator it = begin();
+
+                while (it != end())
+                {
+                    if (_comp(k, (*it).first)) // k < *it.first : we use this semantic to exclude k == (*it)).first
+                        return (it);
+                    it++;
+                }
+                return (it);
             }
 
-            //ft:pair<iterator, iterator> equal_range(const key_type &x);
-            //ft::pair<const_iterator, const_iterator> equal_range(const key_type &x) const;
+            ft::pair<iterator, iterator> equal_range(const key_type &k)
+            {
+                return (ft::make_pair(lower_bound(k), upper_bound(k)));
+            }
+
+            ft::pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+            {
+                return (ft::make_pair(lower_bound(k), upper_bound(k)));
+            }
 
             /* *****************************************************************************
              *                                 CUSTOMS                                     *
