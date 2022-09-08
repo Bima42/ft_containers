@@ -150,10 +150,10 @@ namespace ft {
              *                                ELEMENT ACCESS                               *
              *******************************************************************************/
 
-            /*mapped_type &operator[](const key_type &k)
+            mapped_type &operator[](const key_type &k)
             {
-                (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
-            }*/
+                return ((*((this->insert(ft::make_pair(k,mapped_type()))).first)).second);
+            }
 
             /* Added in C++11 :
              * mapped_type &at(const key_type &k);
