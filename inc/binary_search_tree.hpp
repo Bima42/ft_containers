@@ -27,7 +27,8 @@ namespace ft {
     //template < class T, class Compare, class Node = ft::Node<T>,
     //class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
 
-    template < class T, class Key, class Compare = std::less<Key>, class Node = ft::Node<T>, class Alloc = std::allocator<T>, class Node_Alloc = std::allocator<Node> >
+    template < class T, class Key, class Compare = std::less<Key>, class Node = ft::Node<T>, class Alloc = std::allocator<T>,
+            class Node_Alloc = std::allocator<Node> >
     class BinarySearchTree {
 
         public:
@@ -167,7 +168,7 @@ namespace ft {
                 }
 
                 // predecrement. move backward to largest value < current value
-                BstIterator  operator-- ()
+                BstIterator &operator-- ()
                 {
                     node *p;
 
@@ -408,9 +409,7 @@ namespace ft {
 
                 if (isEmpty() || tmp == NULL)
                     return NULL;
-                if (tmp->left == NULL)
-                    return (tmp);
-                while (tmp && tmp->left != NULL)
+                while (tmp->left != NULL)
                     tmp = tmp->left;
                 return (tmp);
             }

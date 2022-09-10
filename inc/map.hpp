@@ -4,7 +4,6 @@
 #include "binary_search_tree.hpp"
 #include "reverse_iterator.hpp"
 #include "equal.hpp"
-#include <utility>
 
 /* ******************************************************************************
  * Thank god : https://www.cs.odu.edu/~zeil/cs361/latest/Public/maps/index.html *
