@@ -272,6 +272,7 @@ namespace ft {
                         n->parent = oldNode->parent;
                     _alloc.destroy(oldNode);
                     _alloc.deallocate(oldNode, 1);
+                    is_removed = true;
                 }
             }
 
@@ -303,6 +304,7 @@ namespace ft {
                         n->parent = oldNode->parent;
                     _alloc.destroy(oldNode);
                     _alloc.deallocate(oldNode, 1);
+                    is_removed = true;
                 }
             }
 
@@ -404,7 +406,7 @@ namespace ft {
             {
                 node *tmp = root;
 
-                if (isEmpty())
+                if (isEmpty() || tmp == NULL)
                     return NULL;
                 if (tmp->left == NULL)
                     return (tmp);
@@ -422,7 +424,7 @@ namespace ft {
             {
                 node *tmp = root;
 
-                if (isEmpty())
+                if (isEmpty() || tmp == NULL)
                     return NULL;
                 if (tmp != NULL)
                     while( tmp && tmp->right != NULL )
@@ -573,7 +575,7 @@ namespace ft {
                 {
                     if ( Compare()(x, t->value.first) )
                         t = t->left;
-                    else if( Compare()(t->value.first, x.first) )
+                    else if( Compare()(t->value.first, x) )
                         t = t->right;
                     else
                         return (1);
