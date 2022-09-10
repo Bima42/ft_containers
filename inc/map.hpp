@@ -26,12 +26,12 @@ namespace ft {
             typedef typename allocator_type::reference          reference;
             typedef typename allocator_type::const_reference    const_reference;
 
-            typedef typename ft::BinarySearchTree<value_type, key_type>::iterator       iterator;
-            typedef typename ft::BinarySearchTree<value_type, key_type>::const_iterator const_iterator;
-            typedef typename ft::reverse_iterator<iterator>                             reverse_iterator;
-            typedef typename ft::reverse_iterator<const_iterator>                       const_reverse_iterator;
-            typedef size_t                                                              size_type;
-            typedef typename ft::iterator_traits<iterator>::difference_type             difference_type;
+            typedef typename ft::BinarySearchTree<value_type, key_type, key_compare>::iterator          iterator;
+            typedef typename ft::BinarySearchTree<value_type, key_type, key_compare>::const_iterator    const_iterator;
+            typedef typename ft::reverse_iterator<iterator>                                             reverse_iterator;
+            typedef typename ft::reverse_iterator<const_iterator>                                       const_reverse_iterator;
+            typedef size_t                                                                              size_type;
+            typedef typename ft::iterator_traits<iterator>::difference_type                             difference_type;
 
             // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
             class value_compare : public std::binary_function<value_type, value_type, bool>
@@ -61,7 +61,7 @@ namespace ft {
         private:
             allocator_type                          _alloc;
             key_compare                             _comp;
-            BinarySearchTree<value_type, key_type>  _bstree;
+            BinarySearchTree<value_type, key_type, key_compare>  _bstree;
             size_type                               _size;
 
         public:
@@ -165,15 +165,15 @@ namespace ft {
                     key_compare     tmp_comp = x._comp;
                     size_type       tmp_size = x._size;
 
-                    this->_alloc = x._alloc;
-                    this->_comp = x._comp;
-                    this->_size = x._size;
+                    x._alloc = this->_alloc;
+                    x._comp = this->_comp;
+                    x._size = this->_size;
 
-                    x._alloc = tmp_alloc;
-                    x._comp = tmp_comp;
-                    x._size = tmp_size;
+                    this->_alloc = tmp_alloc;
+                    this->_comp = tmp_comp;
+                    this->_size = tmp_size;
 
-                    _bstree.swap(x);
+                    _bstree.swap(x._bstree);
                 }
             }
 
@@ -307,7 +307,7 @@ namespace ft {
 
                 while (it != end())
                 {
-                    if (_comp((*it).first, k) == false) // *it.first < k == false : we use this semantic to include (*it)).first == k
+                    if (_comp((*it).first, k) == false) // *it.first < k == false -> return it if *it.first >= k : we use this semantic to include (*it)).first == k
                         return (it);
                     it++;
                 }

@@ -570,7 +570,7 @@ namespace ft {
 
                 if (t == NULL)
                     return (0);
-                while (t != NULL && x != t->value.first)
+                while (t != NULL)
                 {
                     if ( Compare()(x, t->value.first) )
                         t = t->left;
