@@ -182,23 +182,20 @@ namespace ft {
                             _nodePtr = _nodePtr->right;
                         }
                     }
-                    else
-                    {
-                        if (_nodePtr->left != NULL) {
-                            _nodePtr = _nodePtr->left;
+                    else if (_nodePtr->left != NULL) {
+                        _nodePtr = _nodePtr->left;
 
-                            while (_nodePtr->right != NULL) {
-                                _nodePtr = _nodePtr->right;
-                            }
+                        while (_nodePtr->right != NULL) {
+                            _nodePtr = _nodePtr->right;
                         }
-                        else {
-                            p = _nodePtr->parent;
-                            while (p != NULL && _nodePtr == p->left) {
-                                _nodePtr = p;
-                                p = p->parent;
-                            }
+                    }
+                    else {
+                        p = _nodePtr->parent;
+                        while (p != NULL && _nodePtr == p->left) {
                             _nodePtr = p;
+                            p = p->parent;
                         }
+                        _nodePtr = p;
                     }
                     return (*this);
                 }
@@ -364,8 +361,8 @@ namespace ft {
             {
                 if (this == &rhs)
                     return (*this);
+                this->_root = clone(rhs._root);
                 this->_alloc = rhs._alloc;
-                this->_root = rhs._root;
                 return (*this);
             }
 

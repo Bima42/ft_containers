@@ -3,6 +3,7 @@
 
 #include "binary_search_tree.hpp"
 #include "reverse_iterator.hpp"
+#include "equal.hpp"
 #include <utility>
 
 /* ******************************************************************************
@@ -101,26 +102,20 @@ namespace ft {
              */
             map (const map &x) : _alloc(x._alloc), _comp(x._comp), _bstree(), _size(0)
             {
-                // TODO : use insert() as vector
-                *this = x;
+                insert(x.begin(), x.end());
             }
 
-            ~map()
+            virtual ~map()
             {
-                //this->clear();
+                this->clear();
             }
 
             map &operator=(const map &x)
             {
                 if (this == &x)
                     return (*this);
-                //this->clear();
-
-                //TODO : use insert() as vector
-                this->_alloc = x._alloc;
-                this->_comp = x._comp;
-                this->_bstree = x._bstree;
-                this->_size = x._size;
+                this->clear();
+                insert(x.begin(), x.end());
                 return (*this);
             }
 
@@ -362,6 +357,57 @@ namespace ft {
             void printMap() { _bstree.printTree(); }
 
     };
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool operator== ( const map<Key,T,Compare,Alloc> &lhs,
+                      const map<Key,T,Compare,Alloc> &rhs )
+    {
+        return (equal(lhs.begin(), lhs.end(), rhs.begin()));
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool operator!= ( const map<Key,T,Compare,Alloc> &lhs,
+                      const map<Key,T,Compare,Alloc> &rhs )
+    {
+        return (!(lhs == rhs));
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool operator<  ( const map<Key,T,Compare,Alloc>& lhs,
+                      const map<Key,T,Compare,Alloc>& rhs )
+    {
+        typename ft::map<Key, T>::const_iterator right = rhs.begin();
+
+        for (typename ft::map<Key, T>::const_iterator left = lhs.begin(); left != lhs.end(); left++) {
+            if (right == rhs.end() || *right < *left)
+                return (false);
+            else if (*left < *right)
+                return (true);
+            right++;
+        }
+        return (right != rhs.end());
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool operator<= ( const map<Key,T,Compare,Alloc> &lhs,
+                      const map<Key,T,Compare,Alloc> &rhs )
+    {
+        return (!(rhs < lhs));
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool operator>  ( const map<Key,T,Compare,Alloc> &lhs,
+                      const map<Key,T,Compare,Alloc> &rhs )
+    {
+        return (rhs < lhs);
+    }
+
+    template <class Key, class T, class Compare, class Alloc>
+    bool operator>= ( const map<Key,T,Compare,Alloc>& lhs,
+                      const map<Key,T,Compare,Alloc>& rhs )
+    {
+        return (!(lhs < rhs));
+    }
 }
 
 
