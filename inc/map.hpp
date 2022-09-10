@@ -4,6 +4,7 @@
 #include "binary_search_tree.hpp"
 #include "reverse_iterator.hpp"
 #include "equal.hpp"
+#include "lexicographical_compare.hpp"
 
 /* ******************************************************************************
  * Thank god : https://www.cs.odu.edu/~zeil/cs361/latest/Public/maps/index.html *
@@ -361,6 +362,8 @@ namespace ft {
     bool operator== ( const map<Key,T,Compare,Alloc> &lhs,
                       const map<Key,T,Compare,Alloc> &rhs )
     {
+        if (lhs.size() != rhs.size())
+            return false;
         return (equal(lhs.begin(), lhs.end(), rhs.begin()));
     }
 
@@ -375,16 +378,7 @@ namespace ft {
     bool operator<  ( const map<Key,T,Compare,Alloc>& lhs,
                       const map<Key,T,Compare,Alloc>& rhs )
     {
-        typename ft::map<Key, T>::const_iterator right = rhs.begin();
-
-        for (typename ft::map<Key, T>::const_iterator left = lhs.begin(); left != lhs.end(); left++) {
-            if (right == rhs.end() || *right < *left)
-                return (false);
-            else if (*left < *right)
-                return (true);
-            right++;
-        }
-        return (right != rhs.end());
+        return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
     }
 
     template <class Key, class T, class Compare, class Alloc>
