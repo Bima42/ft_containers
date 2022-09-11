@@ -95,12 +95,10 @@ namespace ft {
             /*
              * Copy Constructor
              * Will copy each element of the vector given in parameter
-             * TODO : use insert()
              */
             vector (const vector &x) : _alloc(x._alloc), _vec(NULL), _size(0), _capacity(0)
             {
-                //this->insert(this->begin(), x.begin(), x.end());
-                *this = x;
+                this->insert(this->begin(), x.begin(), x.end());
             }
 
             /* Destructor */
@@ -113,20 +111,13 @@ namespace ft {
             /* Operator= overload : assign each element of vector given in parameter to the container
              * Replace content and according size
              * Have to clear the content of the previous container
-             * TODO : use insert()
              */
             vector &operator=(const vector &x)
             {
                 if (this == &x)
                     return (*this);
                 this->clear();
-                if (this->capacity() < x.capacity())
-                    this->reserve(x.capacity());
-                for (size_type i = 0; i < x.size(); i++) {
-                    _alloc.construct(_vec + i, x._vec[i]);
-                }
-                _size = x.size();
-                _capacity = x.capacity();
+                this->insert(this->end(), x.begin(), x.end());
                 return (*this);
             }
 
@@ -333,7 +324,6 @@ namespace ft {
              */
             void push_back (const value_type& val)
             {
-                // TODO : Ternaire ici non ??
                 if (this->_capacity == 0)
                     this->reserve(1);
                 else if (this->_size + 1 > this->capacity())
