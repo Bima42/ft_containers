@@ -39,7 +39,7 @@ namespace ft {
             typedef Node_Alloc  node_alloc;
             typedef size_t      size_type;
 
-        template <typename P>
+        template <typename P, class Comp>
         class BstIterator {
 
             public :
@@ -66,7 +66,7 @@ namespace ft {
                 BstIterator() : _nodePtr(NULL), _treePtr(NULL) {};
                 BstIterator(node *n, const BinarySearchTree *t) : _nodePtr(n), _treePtr(t) {};
                 BstIterator(const BstIterator &rhs) : _nodePtr(rhs._nodePtr), _treePtr(rhs._treePtr) {}
-                ~BstIterator() {}
+                virtual ~BstIterator() {}
 
                 BstIterator &operator=(const BstIterator &rhs)
                 {
@@ -77,9 +77,9 @@ namespace ft {
                     return (*this);
                 }
 
-                operator BstIterator<const P>() const
+                operator BstIterator<const P, Comp>() const
                 {
-                    return (BstIterator<const P>(this->_nodePtr, this->_treePtr));
+                    return (BstIterator<const P, Comp>(this->_nodePtr, this->_treePtr));
                 }
 
                 /** dereference operator
@@ -344,8 +344,8 @@ namespace ft {
 
         public:
 
-            typedef BstIterator<value_type>                 iterator;
-            typedef BstIterator<const value_type>           const_iterator;
+            typedef BstIterator<value_type, Compare>                 iterator;
+            typedef BstIterator<const value_type, Compare>           const_iterator;
 
             BinarySearchTree() : _root(NULL) {}
 

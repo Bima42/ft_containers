@@ -27,8 +27,8 @@ namespace ft {
             typedef typename allocator_type::reference          reference;
             typedef typename allocator_type::const_reference    const_reference;
 
-            typedef typename ft::BinarySearchTree<value_type, key_type, key_compare>::iterator          iterator;
-            typedef typename ft::BinarySearchTree<value_type, key_type, key_compare>::const_iterator    const_iterator;
+            typedef typename ft::BinarySearchTree<value_type, key_type, Compare>::iterator          iterator;
+            typedef typename ft::BinarySearchTree<value_type, key_type, Compare>::const_iterator    const_iterator;
             typedef typename ft::reverse_iterator<iterator>                                             reverse_iterator;
             typedef typename ft::reverse_iterator<const_iterator>                                       const_reverse_iterator;
             typedef size_t                                                                              size_type;
@@ -62,7 +62,7 @@ namespace ft {
         private:
             allocator_type                          _alloc;
             key_compare                             _comp;
-            BinarySearchTree<value_type, key_type, key_compare>  _bstree;
+            BinarySearchTree<value_type, key_type, Compare>  _bstree;
             size_type                               _size;
 
         public:

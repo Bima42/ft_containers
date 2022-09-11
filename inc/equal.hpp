@@ -29,6 +29,20 @@ namespace ft {
         }
         return true;
     }
+
+    template <class InputIterator1>
+    bool equal (InputIterator1 first1, InputIterator1 last1,
+                InputIterator1 first2)
+    {
+        while (first1 != last1)
+        {
+            if (*first1 != *first2)
+                return false;
+            first1++;
+            first2++;
+        }
+        return true;
+    }
 }
 
 #endif // EQUAL_HPP
