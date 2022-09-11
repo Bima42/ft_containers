@@ -7,10 +7,11 @@
 #include "enable_if.hpp"
 #include "equal.hpp"
 #include "utils.hpp"
+#include <algorithm>
 
 namespace ft {
 
-    template<typename T, typename Alloc = std::allocator<T> >
+    template<class T, class Alloc = std::allocator<T> >
     class vector
     {
         public :
@@ -98,14 +99,16 @@ namespace ft {
              */
             vector (const vector &x) : _alloc(x._alloc), _vec(NULL), _size(0), _capacity(0)
             {
-                this->insert(this->begin(), x.begin(), x.end());
+                //this->insert(this->begin(), x.begin(), x.end());
+                *this = x;
             }
 
             /* Destructor */
             virtual ~vector()
             {
                 this->clear();
-                _alloc.deallocate(_vec, _capacity);
+                if (this->capacity() != 0)
+                    _alloc.deallocate(_vec, _capacity);
             }
 
             /* Operator= overload : assign each element of vector given in parameter to the container
@@ -117,7 +120,14 @@ namespace ft {
                 if (this == &x)
                     return (*this);
                 this->clear();
-                this->insert(this->end(), x.begin(), x.end());
+                if (this->capacity() < x.capacity())
+                    this->reserve(x.capacity());
+                for (size_type i = 0; i < x.size(); i++) {
+                    _alloc.construct(_vec + i, x._vec[i]);
+                }
+                _size = x.size();
+                _capacity = x.capacity();
+                //this->insert(this->end(), x.begin(), x.end());
                 return (*this);
             }
 
@@ -447,19 +457,28 @@ namespace ft {
             {
                 size_type n = ft::distance(first, last);
                 size_type distance = ft::distance(this->begin(), position);
-                size_type old_cap = this->capacity();
-
                 if (_size + n > _capacity)
                 {
                     if (this->size() == 0)
                     {
                         this->_vec = _alloc.allocate(n);
-                        for (size_type i = 0; i < n; i++)
-                            _alloc.construct(this->_vec + i, *first++);
+                        for (size_type i = 0; i < n; i++) {
+                            try {_alloc.construct(this->_vec + i, *first++);}
+                            catch(...)
+                            {
+                                _size = i;
+                                _capacity = n;
+                                this->clear();
+                                _alloc.deallocate(_vec, n);
+                                _capacity = 0;
+                                throw std::exception();
+                            }
+                        }
                         this->_size = n;
                         this->_capacity = n;
                     }
                     else {
+                        size_type old_cap = this->capacity();
                         if (this->size() + n > this->capacity() * 2)
                             this->_capacity = n + this->size();
                         else
@@ -473,27 +492,25 @@ namespace ft {
                             _alloc.construct(tmp + distance + n + i, *(_vec + distance + i));
                         for (size_type j = 0; j < this->size(); j++)
                             _alloc.destroy(_vec + j);
-                        _alloc.deallocate(_vec, old_cap);
-
                         _size = this->size() + n;
+                        _alloc.deallocate(_vec, old_cap);
                         _vec = tmp;
                     }
                 }
-                else
+                else if (n != 0)
                 {
                     size_type new_end = _size + n;
                     for (iterator end_scope = this->end(); end_scope != position; end_scope--)
+                    {
                         _alloc.construct(_vec + new_end--, *end_scope);
+                    }
                     _alloc.construct(_vec + new_end, *position);
-
                     for (size_type i = 0;i < n; i++)
                     {
                         *(position + i) = *first++;
                     }
-
                     _size += n;
                 }
-
             }
 
 
@@ -539,23 +556,23 @@ namespace ft {
              */
             void swap (vector &x)
             {
-                if (x == *this)
-                    return ;
+                if (this != &x)
+                {
+                    pointer vec_tmp = x._vec;
+                    size_type size_tmp = x._size;
+                    size_type capacity_tmp = x._capacity;
+                    allocator_type alloc_tmp = x._alloc;
 
-                allocator_type  _alloc_tmp = x._alloc;
-                pointer         _vec_tmp = x._vec;
-                size_type       _size_tmp = x._size;
-                size_type       _capacity_tmp = x._capacity;
+                    x._vec = this->_vec;
+                    x._size = this->_size;
+                    x._capacity = this->_capacity;
+                    x._alloc = this->_alloc;
 
-                x._alloc = this->_alloc;
-                x._vec = this->_vec;
-                x._size = this->_size;
-                x._capacity = this->_capacity;
-
-                this->_alloc = _alloc_tmp;
-                this->_vec = _vec_tmp;
-                this->_size = _size_tmp;
-                this->_capacity = _capacity_tmp;
+                    this->_vec = vec_tmp;
+                    this->_size = size_tmp;
+                    this->_capacity = capacity_tmp;
+                    this->_alloc = alloc_tmp;
+                }
             }
 
             /* Clear : destroy all elements using destroy, but NOT DEALLOCATE */
@@ -621,7 +638,7 @@ namespace ft {
 
     /* Swap() : overloading swap algorithm with an optimization that behaves like this member function. */
     template <class T, class Alloc>
-    void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>&y)
+    void swap (ft::vector<T,Alloc> &x, ft::vector<T,Alloc> &y)
     {
         x.swap(y);
     }
