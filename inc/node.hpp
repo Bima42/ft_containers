@@ -17,10 +17,9 @@ namespace ft {
         Node *parent;
 
         Node(const value_type &insert_value, Node *lft, Node *rgt, Node *prt) :
-                value(insert_value),
                 left(lft),
                 right(rgt),
-                parent(prt) {}
+                parent(prt) {this->value = insert_value;}
 
     };
 }

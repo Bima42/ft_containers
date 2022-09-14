@@ -1,10 +1,10 @@
 NAME = containers
 
-SRCS =	main.cpp
+SRCS =	main.cpp tests_map.cpp
 
 CC = g++-11
 FLAGS = -Wall -Wextra -Werror -pedantic -g
-CPP_FLAGS = -std=c++98
+CPP_FLAGS = #-std=c++98
 
 OBJS = $(SRCS:.cpp=.o)
 
