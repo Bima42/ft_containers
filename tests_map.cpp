@@ -47,11 +47,11 @@ void tests_map()
         end2 = std::clock(); //end
 
         std::cout << "Range -> ";
-        controlSize(mp_ft, mp_std);
+        controlSizeMap(mp_ft, mp_std);
         std::cout << "Copy -> ";
-        controlSize(mp_copy_ft, mp_copy_std);
+        controlSizeMap(mp_copy_ft, mp_copy_std);
         std::cout << "Overload Assignment -> ";
-        controlSize(mp_equal_ft, mp_equal_std);
+        controlSizeMap(mp_equal_ft, mp_equal_std);
 
         int i = -1;
         std::string toPrint;
@@ -65,7 +65,7 @@ void tests_map()
         toPrint = (i != 100) ? "Content : KO" : "Content : OK";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -242,7 +242,7 @@ void tests_map()
 
         std::string toPrint;
         std::cout << "Insert value -> ";
-        controlSize(mp_ft, mp_std);
+        controlSizeMap(mp_ft, mp_std);
 
         std::cout << "Insert value -> ";
         toPrint = (ft_pair.second == std_pair.second) ? "Data inserted : ✅" : "Data inserted : ❌";
@@ -271,7 +271,7 @@ void tests_map()
         end2 = std::clock();
 
         std::cout << "Insert range -> ";
-        controlSize(mp_ft_range, mp_std_range);
+        controlSizeMap(mp_ft_range, mp_std_range);
         i = -1;
         while (++i < 800)
             if (mp_ft[i] != mp_std[i])
@@ -293,7 +293,7 @@ void tests_map()
         end2 = std::clock();
 
         std::cout << "Insert position -> ";
-        controlSize(mp_ft, mp_std);
+        controlSizeMap(mp_ft, mp_std);
         i = -1;
         while (++i < 1000)
             if (mp_ft[i] != mp_std[i])
@@ -334,7 +334,7 @@ void tests_map()
 
         std::string toPrint;
         std::cout << "Erase position -> ";
-        controlSize(mp_ft, mp_std);
+        controlSizeMap(mp_ft, mp_std);
         int i = -1;
         while (++i < 999)
             if (mp_ft[i] != mp_std[i])
@@ -358,7 +358,7 @@ void tests_map()
         end2 = std::clock();
 
         std::cout << "Erase key -> ";
-        controlSize(mp_ft, mp_std);
+        controlSizeMap(mp_ft, mp_std);
         i = -1;
         while (++i < 997)
             if (mp_ft[i] != mp_std[i])
@@ -436,9 +436,9 @@ void tests_map()
         
         std::cout << "---- FT Before swap ----" << std::endl;
         std::cout << "--------- Map1 ---------" << std::endl;
-        printSize(mp_ft);
+        printSizeMap(mp_ft);
         std::cout << "--------- Map2 ---------" << std::endl;
-        printSize(mp_ft2);
+        printSizeMap(mp_ft2);
 
         start1 = std::clock();
         mp_ft.swap(mp_ft2);
@@ -446,9 +446,9 @@ void tests_map()
 
         std::cout << "---- FT After swap ----" << std::endl;
         std::cout << "--------- Map1 ---------" << std::endl;
-        printSize(mp_ft);
+        printSizeMap(mp_ft);
         std::cout << "--------- Map2 ---------" << std::endl;
-        printSize(mp_ft2);
+        printSizeMap(mp_ft2);
 
         _std<T1, T2> mp_std;
         _std<T1, T2> mp_std2;
@@ -459,9 +459,9 @@ void tests_map()
 
         std::cout << "---- STD Before swap ----" << std::endl;
         std::cout << "--------- Map1 ----------" << std::endl;
-        printSize(mp_std);
+        printSizeMap(mp_std);
         std::cout << "--------- Map2 ----------" << std::endl;
-        printSize(mp_std2);
+        printSizeMap(mp_std2);
 
         start2 = std::clock();
         mp_std.swap(mp_std2);
@@ -469,9 +469,9 @@ void tests_map()
 
         std::cout << "---- STD After swap ----" << std::endl;
         std::cout << "--------- Map1 ---------" << std::endl;
-        printSize(mp_std);
+        printSizeMap(mp_std);
         std::cout << "--------- Map2 ---------" << std::endl;
-        printSize(mp_std2);
+        printSizeMap(mp_std2);
 
         std::string toPrint;
         toPrint = (mp_ft[0] == mp_std[0] && mp_ft2[0] == mp_std2[0]) ? "Swap : ✅" : "Swap : ❌";
