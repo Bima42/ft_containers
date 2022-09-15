@@ -13,30 +13,30 @@ namespace ft {
             typedef T           value_type;
             typedef size_t      size_type;
 
-        private:
-            container_type _container;
+        protected:
+            container_type c;
 
         public:
-            explicit stack( const Container &cont = Container() ) : _container(cont) {}
+            explicit stack( const Container &cont = Container() ) : c(cont) {}
             stack( const stack &x ) { *this = x; }
             ~stack() {}
 
             stack &operator=(const stack &x)
             {
                 if (this != &x)
-                    this->_container = x._container;
+                    this->c = x.c;
                 return (*this);
             }
 
-            bool empty() const { return (_container.empty()); }
+            bool empty() const { return (c.empty()); }
 
-            void push (const value_type& val) { _container.push_back(val); }
-            void pop() { _container.pop_back(); }
+            void push (const value_type& val) { c.push_back(val); }
+            void pop() { c.pop_back(); }
 
-            size_type size() const { return (_container.size()); }
+            size_type size() const { return (c.size()); }
 
-            value_type &top() { return (_container.back()); }
-            const value_type &top() const { return (_container.back()); }
+            value_type &top() { return (c.back()); }
+            const value_type &top() const { return (c.back()); }
 
             /*
              * Need to declare those prototypes, using key word friend, to give access to private attributes
@@ -63,37 +63,37 @@ namespace ft {
     template <class T, class Container>
     bool operator== (const stack<T,Container> &lhs, const stack<T,Container> &rhs)
     {
-        return (lhs._container == rhs._container);
+        return (lhs.c == rhs.c);
     }
 
     template <class T, class Container>
     bool operator!= (const stack<T,Container> &lhs, const stack<T,Container> &rhs)
     {
-        return (lhs._container != rhs._container);
+        return (lhs.c != rhs.c);
     }
 
     template <class T, class Container>
     bool operator<  (const stack<T,Container> &lhs, const stack<T,Container> &rhs)
     {
-        return (lhs._container < rhs._container);
+        return (lhs.c < rhs.c);
     }
 
     template <class T, class Container>
     bool operator<= (const stack<T,Container> &lhs, const stack<T,Container> &rhs)
     {
-        return (lhs._container <= rhs._container);
+        return (lhs.c <= rhs.c);
     }
 
     template <class T, class Container>
     bool operator>  (const stack<T,Container> &lhs, const stack<T,Container> &rhs)
     {
-        return (lhs._container > rhs._container);
+        return (lhs.c > rhs.c);
     }
 
     template <class T, class Container>
     bool operator>= (const stack<T,Container> &lhs, const stack<T,Container> &rhs)
     {
-        return (lhs._container >= rhs._container);
+        return (lhs.c >= rhs.c);
     }
 }
 

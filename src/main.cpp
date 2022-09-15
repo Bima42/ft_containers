@@ -25,15 +25,15 @@ int main (int argc, char** argv) {
 /*#include <iostream>
 #include <string>
 #include <deque>
-#if 1 //CREATE A REAL STL EXAMPLE
+#if 0 //CREATE A REAL STL EXAMPLE
 #include <map>
 #include <stack>
 #include <vector>
 namespace ft = std;
 #else
-#include <inc/map.hpp>
-	#include <inc/stack.hpp>
-	#include <inc/vector.hpp>
+#include "../inc/map.hpp"
+	#include "../inc/stack.hpp"
+	#include "../inc/vector.hpp"
 #endif
 
 #include <stdlib.h>
@@ -46,8 +46,7 @@ struct Buffer
     char buff[BUFFER_SIZE];
 };
 
-
-#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+#define COUNT 100
 
 template<typename T>
 class MutantStack : public ft::stack<T>
