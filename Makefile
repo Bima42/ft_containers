@@ -1,6 +1,9 @@
 NAME = containers
 
-SRCS =	main.cpp tests_map.cpp tests_vector.cpp tests_stack.cpp
+SRCS =	src/main.cpp \
+		src/tests_map.cpp \
+		src/tests_vector.cpp \
+		src/tests_stack.cpp
 
 CC = g++-11
 FLAGS = -Wall -Wextra -Werror -pedantic -g

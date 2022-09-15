@@ -1,4 +1,4 @@
-#include "tests_utils.hpp"
+#include "../inc/tests_utils.hpp"
 
 int main (int argc, char** argv) {
     if (argc == 1) {

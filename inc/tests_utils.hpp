@@ -1,10 +1,10 @@
 #ifndef TESTS_UTILS_HPP
 #define TESTS_UTILS_HPP
 
-#include "inc/map.hpp"
-#include "inc/vector.hpp"
-#include "inc/stack.hpp"
-#include "colors.hpp"
+#include "map.hpp"
+#include "vector.hpp"
+#include "stack.hpp"
+#include "../colors.hpp"
 //----------------------------
 #include <map>
 #include <vector>

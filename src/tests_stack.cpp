@@ -1,4 +1,4 @@
-#include "tests_utils.hpp"
+#include "../inc/tests_utils.hpp"
 
 static double start1;
 static double start2;
