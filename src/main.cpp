@@ -18,7 +18,6 @@ int main (int argc, char** argv) {
         else
             std::cout << "Please, use one of the flag to compile : \n\t-m : map\n\t-v : vector\n\t-s : stack" << std::endl;
     }
-
     return 0;
 }
 

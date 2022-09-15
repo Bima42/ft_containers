@@ -4,7 +4,7 @@
 #include "map.hpp"
 #include "vector.hpp"
 #include "stack.hpp"
-#include "../colors.hpp"
+#include "colors.hpp"
 //----------------------------
 #include <map>
 #include <vector>
