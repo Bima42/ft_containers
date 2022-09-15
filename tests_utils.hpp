@@ -3,10 +3,12 @@
 
 #include "inc/map.hpp"
 #include "inc/vector.hpp"
+#include "inc/stack.hpp"
 #include "colors.hpp"
 //----------------------------
 #include <map>
 #include <vector>
+#include <stack>
 #include <list>
 #include <ctime>
 #include <iostream>
@@ -20,8 +22,12 @@
 
 #define _ft ft::map
 #define _std std::map
+
 #define _fvec ft::vector
 #define _svec std::vector
+
+#define _fstack ft::stack
+#define _sstack std::stack
 
 #define _pair ft::pair
 
@@ -35,6 +41,7 @@ typedef _std_pair<T1, T2> STD3;
 
 void tests_map();
 void tests_vector();
+void tests_stack();
 
 template <typename T>
 std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
@@ -61,7 +68,7 @@ void	printSizeMap(T_MAP const &mp, bool print_content = 1)
 }
 
 template <typename FT_MAP, typename STD_MAP>
-void controlSizeMap (FT_MAP my_map, STD_MAP std_map)
+void controlSize (FT_MAP my_map, STD_MAP std_map)
 {
     std::string toPrint;
 
@@ -84,7 +91,7 @@ void    printSize(T_VECT const &vect, bool print_content = 1)
 }
 
 template <typename FT_VECT, typename STD_VECT>
-void controlSize (FT_VECT my_vec, STD_VECT std_vec)
+void controlSizeVec (FT_VECT my_vec, STD_VECT std_vec)
 {
     std::string toPrint;
 

@@ -47,11 +47,11 @@ void tests_map()
         end2 = std::clock(); //end
 
         std::cout << "Range -> ";
-        controlSizeMap(mp_ft, mp_std);
+        controlSize(mp_ft, mp_std);
         std::cout << "Copy -> ";
-        controlSizeMap(mp_copy_ft, mp_copy_std);
+        controlSize(mp_copy_ft, mp_copy_std);
         std::cout << "Overload Assignment -> ";
-        controlSizeMap(mp_equal_ft, mp_equal_std);
+        controlSize(mp_equal_ft, mp_equal_std);
 
         int i = -1;
         std::string toPrint;
@@ -65,7 +65,8 @@ void tests_map()
         toPrint = (i != 100) ? "Content : KO" : "Content : OK";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -104,7 +105,8 @@ void tests_map()
                     && fit3.second->first == sit3.second->first && fit3.second->second == sit3.second->second) ? "Equal range : ✅" : "Upper bound : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -134,7 +136,8 @@ void tests_map()
         toPrint = (ret[1] == ret[3]) ? "Empty : ✅" : "Empty : ❌";
         std::cout << "Map fill -> " << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -178,7 +181,8 @@ void tests_map()
         toPrint = (it->first == highest.first && sit->first == highest2.first) ? "Comp : ✅" : "Comp : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -214,7 +218,8 @@ void tests_map()
         toPrint = (fit->second == sit->second) ? "Find : ✅" : "Find : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -242,7 +247,7 @@ void tests_map()
 
         std::string toPrint;
         std::cout << "Insert value -> ";
-        controlSizeMap(mp_ft, mp_std);
+        controlSize(mp_ft, mp_std);
 
         std::cout << "Insert value -> ";
         toPrint = (ft_pair.second == std_pair.second) ? "Data inserted : ✅" : "Data inserted : ❌";
@@ -255,31 +260,33 @@ void tests_map()
         toPrint = (i == 1000) ? "Content : ✅" : "Content : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
 
         std::cout << "########## Insert Range ###########" << std::endl;
         
         start1 = std::clock();
         _ft<T1, T2> mp_ft_range;
-        mp_ft_range.insert(mp_ft.begin(), mp_ft.find(800));
+        mp_ft_range.insert(mp_ft.begin(), mp_ft.find(400));
         end1 = std::clock();
 
         start2 = std::clock();
         _std<T1, T2> mp_std_range;
-        mp_std_range.insert(mp_std.begin(), mp_std.find(800));
+        mp_std_range.insert(mp_std.begin(), mp_std.find(400));
         end2 = std::clock();
 
         std::cout << "Insert range -> ";
-        controlSizeMap(mp_ft_range, mp_std_range);
+        controlSize(mp_ft_range, mp_std_range);
         i = -1;
-        while (++i < 800)
-            if (mp_ft[i] != mp_std[i])
+        while (++i < 400)
+            if (mp_ft_range[i] != mp_std_range[i])
                 break;
-        toPrint = (i == 800) ? "Content : ✅\nData inserted : ✅" : "Content : ❌\nData inserted : ❌";
+        toPrint = (i == 400) ? "Content : ✅\nData inserted : ✅" : "Content : ❌\nData inserted : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
 
         std::cout << "######### Insert Position #########" << std::endl;
@@ -293,7 +300,7 @@ void tests_map()
         end2 = std::clock();
 
         std::cout << "Insert position -> ";
-        controlSizeMap(mp_ft, mp_std);
+        controlSize(mp_ft, mp_std);
         i = -1;
         while (++i < 1000)
             if (mp_ft[i] != mp_std[i])
@@ -304,7 +311,8 @@ void tests_map()
         toPrint = ((*ret).second == (*ret2).second) ? "Data inserted ✅" : "Data inserted : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -334,7 +342,7 @@ void tests_map()
 
         std::string toPrint;
         std::cout << "Erase position -> ";
-        controlSizeMap(mp_ft, mp_std);
+        controlSize(mp_ft, mp_std);
         int i = -1;
         while (++i < 999)
             if (mp_ft[i] != mp_std[i])
@@ -342,7 +350,8 @@ void tests_map()
         toPrint = (i == 999) ? "Content : ✅" : "Content : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
 
         std::cout << "########## Erase key ###########" << std::endl;
@@ -358,7 +367,7 @@ void tests_map()
         end2 = std::clock();
 
         std::cout << "Erase key -> ";
-        controlSizeMap(mp_ft, mp_std);
+        controlSize(mp_ft, mp_std);
         i = -1;
         while (++i < 997)
             if (mp_ft[i] != mp_std[i])
@@ -366,7 +375,8 @@ void tests_map()
         toPrint = (i == 997) ? "Content : ✅" : "Content : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -421,7 +431,8 @@ void tests_map()
         toPrint = ((*rit2).first == (*rsit2).first) ? "Rev Iter Increment : ✅" : "Rev Iter Increment : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -477,7 +488,8 @@ void tests_map()
         toPrint = (mp_ft[0] == mp_std[0] && mp_ft2[0] == mp_std2[0]) ? "Swap : ✅" : "Swap : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
     {
@@ -531,7 +543,8 @@ void tests_map()
                     && ret_ft[5] == ret_std[5]) ? "Relational operators : ✅" : "Relational operators : ❌";
         std::cout << toPrint << std::endl;
 
-        toPrint = ((end1 - start1) > (end2 - start2) * 20) ? "\033[1;31mDiff Time KO\033[0m" : "\033[1;32mDiff Time OK\033[0m";
+        double time = (end2 - start2) == 0 ? 1 : (end2 - start2);
+        toPrint = ((end1 - start1) > (time * 20)) ? FRED("Diff Time KO") : FGRN("Diff Time OK");
         std::cout << toPrint << std::endl << std::endl;
     }
 }

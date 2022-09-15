@@ -1,8 +1,24 @@
 #include "tests_utils.hpp"
 
-int main () {
-    tests_map();
-    tests_vector();
+int main (int argc, char** argv) {
+    if (argc == 1) {
+        tests_map();
+        tests_vector();
+        tests_stack();
+    }
+    else if (argc == 2)
+    {
+        std::string av(argv[1]);
+        if (av == "-m")
+            tests_map();
+        else if (av == "-v")
+            tests_vector();
+        else if (av == "-s")
+            tests_stack();
+        else
+            std::cout << "Please, use one of the flag to compile : \n\t-m : map\n\t-v : vector\n\t-s : stack" << std::endl;
+    }
+
     return 0;
 }
 
