@@ -1,8 +1,16 @@
 # ft_containers
+- [1. Get Started](#get-started)
+- [2. Docs](#docs)
+  - [2.1 Vector](#vector)
+  - [2.2 Map](#map)
+  - [2.3 Stack](#stack)
+  - [2.4 Utils](#utils)
+- [3. Testers](#testers) 
+
 We have to build our own vector, map and stack.
 We also have to implement some other STD tools, such as enable_if, iterator_traits, pair etc..
 
-# Install
+# Get Started
 ```
 git clone git@github.com:Bima42/ft_containers.git
 ```
@@ -11,15 +19,15 @@ git clone git@github.com:Bima42/ft_containers.git
 make
 ``` 
 
-You can use ```[container_name]``` with make, to build an executable according to this container.
-
 ```
 ./containers
 ```
 
+- Use the `--help` to display all possibilities
+
 # Docs
 - There is a non exhaustive list of docs that I used to do this project.
-- cplusplus.com and cppreference.com are just awesome for ft_containers. There is a lot to read.
+- [cplusplus](http://cplusplus.com) and [cppreference](http://cppreference.com) are just awesome for ft_containers. There is a lot to read.
 - Be careful to check when functions were added to the container, some since C++11. You don't have to implement those.
 
 ## Vector
@@ -67,3 +75,8 @@ You can use ```[container_name]``` with make, to build an executable according t
 - [source is_integral](https://code.woboq.org/appleseed/include/boost/type_traits/is_integral.hpp.html)
 - [equal](https://cplusplus.com/reference/algorithm/equal/)
 - [pair](https://en.cppreference.com/w/cpp/utility/pair)
+
+# Testers
+Thanks to [@divinepet](https://github.com/divinepet) and [@mli42](https://github.com/mli42)
+- [Divinepet Tester](https://github.com/divinepet/ft_containers-unit-test)
+- [Mli42 Tester](https://github.com/mli42/containers_test)
