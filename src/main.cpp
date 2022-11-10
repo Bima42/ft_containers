@@ -15,8 +15,10 @@ int main (int argc, char** argv) {
             tests_vector();
         else if (av == "-s")
             tests_stack();
-        else
+        else if (av == "-h" || av == "--help")
             std::cout << "Please, use one of the flag to compile : \n\t-m : map\n\t-v : vector\n\t-s : stack" << std::endl;
+		else
+			std::cout << "You can use the following flags :\n\t -h or --help : display all flags\n\t -m : launch map tests\n\t -v : launch vector tests\n\t -s : launch stack tests" << std::endl;
     }
     return 0;
 }
